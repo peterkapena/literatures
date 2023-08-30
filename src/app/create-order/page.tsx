@@ -1,19 +1,33 @@
 "use client";
-import { Box, FormHelperText, Typography } from "@mui/joy";
+import { Box, Grid, Typography } from "@mui/joy";
 import React, { FormEvent, useState } from "react";
 import { CssVarsProvider, useColorScheme } from "@mui/joy/styles";
 import Sheet from "@mui/joy/Sheet";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  FieldErrors,
+  SubmitHandler,
+  UseFormRegister,
+  useForm,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSchema, FormSchemaType } from "./form-schema";
 import { addEntry } from "./_actions";
-import { InfoOutlined } from "@mui/icons-material";
+import Stack from "@mui/joy/Stack";
+import { styled } from "@mui/joy/styles";
+import TextField from "../../components/TextField";
+import TextArea from "@/components/TextArea";
 
+const Item = styled(Sheet)(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark" ? theme.palette.background.level1 : "#fff",
+  ...theme.typography["body-sm"],
+  padding: theme.spacing(1),
+  textAlign: "center",
+  borderRadius: 4,
+  color: theme.vars.palette.text.secondary,
+}));
 const NewOrder = () => {
   const [data, setData] = useState<FormSchemaType>();
 
@@ -26,21 +40,6 @@ const NewOrder = () => {
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
   });
-
-  // const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const form = event.currentTarget;
-  //   const formData = new FormData(form);
-  //   const formDataObject = Object.fromEntries(formData);
-
-  //   const d = await fetch("/api/form", {
-  //     method: "POST",
-  //     body: JSON.stringify(formDataObject),
-  //   }).then((response) => response.json());
-
-  //   setData(d);
-  //   form.reset();
-  // };
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
     const result = await addEntry(data);
@@ -80,26 +79,46 @@ const NewOrder = () => {
         </Typography>
       </div>
       <form onSubmit={handleSubmit(processForm)}>
-        <FormControl>
-          <FormLabel>
-            {"Literature details (title, year, edition, etc..)"}
-          </FormLabel>
-          <Input
-            // html input attribute
-            type="text"
-            placeholder="Literature"
-            autoComplete=""
-            {...register("literature")}
-            error={Boolean(errors.literature?.message)}
-          />
-          {errors.literature?.message && (
-            <FormHelperText>
-              <InfoOutlined />
-              {errors.literature.message}
-            </FormHelperText>
-          )}
-        </FormControl>
-        <Button type="submit" sx={{ mt: 1 /* margin top */ }}>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          // columns={{ xs: "auto", sm: 2, md: 12 }}
+          sx={{ flexGrow: 1 }}
+        >
+          <Grid xs={12} sm={8} md={8} key={5}>
+            <TextField
+              label={"Literature details (title, year, edition, etc..)"}
+              fieldName="literature"
+              placeholder="Literature"
+              register={ register}
+              fieldError={errors.literature}
+              type="text"
+            ></TextField>
+          </Grid>
+          <Grid xs={12} sm={4} md={4} key={4}>
+            <TextField
+              label={"Quantity"}
+              fieldName="quantity"
+              placeholder="Quantity"
+              register={register}
+              fieldError={errors.quantity}
+              type="number"
+            ></TextField>
+          </Grid>
+          <Grid xs={12} sm={12} md={12} key={3}>
+            <TextArea
+              register={register}
+              fieldError={errors.notes}
+              fieldName="notes"
+              label="Notes"
+              minRows={4}
+              maxRows={20}
+              maxLength={700}
+            ></TextArea>
+          </Grid>
+        </Grid>
+
+        <Button type="submit" sx={{ mt: 3 }}>
           Submit
         </Button>
       </form>
