@@ -27,3 +27,7 @@ export const toggleSidebar = () => {
 
 export const APP_NAME = "LITERATURE";
 
+export type FormFieldModel = {
+  name: string;
+  label: string;
+};
