@@ -74,7 +74,7 @@ const NewOrder = () => {
       }}
     >
       <div>
-        <Typography level="h4" component="h1">
+        <Typography sx={{ textAlign: "center" }} level="h4" component="h1">
           <b>Submit an order</b>
         </Typography>
       </div>
@@ -90,7 +90,7 @@ const NewOrder = () => {
               label={"Literature details (title, year, edition, etc..)"}
               fieldName="literature"
               placeholder="Literature"
-              register={ register}
+              register={register}
               fieldError={errors.literature}
               type="text"
             ></TextField>
