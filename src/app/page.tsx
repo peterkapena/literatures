@@ -1,67 +1,27 @@
-import "@fontsource/inter";
-import ColorSchemeToggle from "@/components/ColorSchemeToggle";
-import Header from "@/components/Header";
-import OrderTable from "@/components/OrderTable";
-import SecondSidebar from "@/components/SecondSidebar";
-// import theme from "@/theme";
-import { Box, CssVarsProvider, Typography } from "@mui/joy";
-import Button from "@mui/joy/Button";
-import Head from "next/head";
+"use client";
+import * as React from "react";
+import { styled } from "@mui/joy/styles";
+import Sheet from "@mui/joy/Sheet";
+import NextLink from "next/link";
+import Grid from "@mui/joy/Grid";
+import { Box, Button, Typography } from "@mui/joy";
 
-export default function ButtonUsage() {
+export default function ResponsiveGrid() {
   return (
-    <Box sx={{ display: "flex", minHeight: "100dvh" }}>
-      <Header />
-      <SecondSidebar />
-      <Box
-        component="main"
-        className="MainContent"
-        sx={{
-          px: {
-            xs: 2,
-            md: 6,
-          },
-          pt: {
-            xs: "calc(12px + var(--Header-height))",
-            sm: "calc(12px + var(--Header-height))",
-            md: 3,
-          },
-          pb: {
-            xs: 2,
-            sm: 2,
-            md: 3,
-          },
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          minWidth: 0,
-          height: "100dvh",
-          gap: 1,
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <ColorSchemeToggle
-            sx={{ ml: "auto", display: { xs: "none", md: "inline-flex" } }}
-          />
-        </Box>
-        <div>
-          {" "}
-          <Box
-            sx={{
-              display: "flex",
-              my: 1,
-              gap: 1,
-              flexDirection: { xs: "column", sm: "row" },
-              alignItems: { xs: "start", sm: "center" },
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography level="h2">Orders</Typography>
-          </Box>
-          {/* <OrderTable /> */}
-        </div>
-      </Box>
-    </Box>
+    <Grid
+      container
+      spacing={{ xs: 2, md: 3 }}
+      columns={{ xs: 4, sm: 8, md: 12 }}
+      sx={{ flexGrow: 1 }}
+    >
+      <Grid xs={2} sm={4} md={6}>
+        <Typography level="h2">Orders</Typography>
+      </Grid>
+      <Grid xs={2} sm={4} md={6}>
+        <NextLink href="/create-order">
+          <Button size="sm">Make an order</Button>
+        </NextLink>
+      </Grid>
+    </Grid>
   );
 }
