@@ -1,9 +1,60 @@
-import React from 'react'
+"use client";
+import * as React from "react";
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import Checkbox from "@mui/joy/Checkbox";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
+import Link from "@mui/joy/Link";
+import Input from "@mui/joy/Input";
+import Typography from "@mui/joy/Typography";
+import GoogleIcon from "@/components/GoogleIcon";
+import { signIn } from "next-auth/react";
 
-const SignIn = () => {
+export default function JoySignInSideTemplate() {
   return (
-    <div>SignIn</div>
-  )
+    <>
+      <Box
+        sx={(theme) => ({
+          width:
+            "clamp(100vw - var(--Cover-width), (var(--Collapsed-breakpoint) - 100vw) * 999, 100vw)",
+          transition: "width var(--Transition-duration)",
+          transitionDelay: "calc(var(--Transition-duration) + 0.1s)",
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          justifyContent: "center",
+          backdropFilter: "blur(4px)",
+          backgroundColor: "rgba(255 255 255 / 0.6)",
+          [theme.getColorSchemeSelector("dark")]: {
+            backgroundColor: "rgba(19 19 24 / 0.4)",
+          },
+        })}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100dvh",
+            width:
+              "clamp(var(--Form-maxWidth), (var(--Collapsed-breakpoint) - 100vw) * 999, 100%)",
+            maxWidth: "100%",
+            px: 2,
+          }}
+        >
+          <Box>
+            <Button
+              variant="outlined"
+              color="neutral"
+              fullWidth
+              onClick={() => signIn("google", { callbackUrl: "/" })}
+              startDecorator={<GoogleIcon />}
+            >
+              Sign in with Google
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </>
+  );
 }
-
-export default SignIn
