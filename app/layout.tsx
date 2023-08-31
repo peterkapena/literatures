@@ -17,8 +17,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function RootLayout({ children,  session }: Props) {
-
+export default function RootLayout({ children, session }: Props) {
   return (
     <html lang="en">
       <body>
@@ -26,26 +25,10 @@ export default function RootLayout({ children,  session }: Props) {
           <SessionProvider session={session}>
             <Header />
             <Box
-              component="main"
-              className="MainContent"
-              sx={{
-                px: {
-                  xs: 2,
-                  md: 6,
-                },
-                pt: {
-                  xs: "calc(20px + var(--Header-height))",
-                  sm: "calc(20px + var(--Header-height))",
-                  md: "calc(20px + var(--Header-height))",
-                },
-                pb: {
-                  xs: 2,
-                  sm: 2,
-                  md: 3,
-                },
-                flex: 1,
-                gap: 1,
-              }}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ mt: 10 }}
             >
               {children}
             </Box>

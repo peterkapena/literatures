@@ -4,15 +4,11 @@ import GlobalStyles from "@mui/joy/GlobalStyles";
 import Sheet from "@mui/joy/Sheet";
 import IconButton from "@mui/joy/IconButton";
 import ColorSchemeToggle from "./ColorSchemeToggle";
-import { Box, Avatar, Typography, Link, Button } from "@mui/joy";
+import { Box, Avatar, Typography, Button } from "@mui/joy";
 import {
-  ClientSafeProvider,
-  getProviders,
-  signIn,
   signOut,
   useSession,
 } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { APP_NAME } from "@/utils/constants";
 
 export default function Header() {

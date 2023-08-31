@@ -22,3 +22,8 @@ export async function createOrder(
 
   return { success: false, data };
 }
+export async function getOrders(userId: string) {
+  const rtn = await new OrderService().getOrdersByUser(userId);
+  // console.log(rtn);
+  return JSON.stringify(rtn);
+}

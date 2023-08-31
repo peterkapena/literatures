@@ -16,7 +16,7 @@ function findByEmail(
   this: ReturnModelType<typeof UserClass, UserSchemaQueryHelpers>,
   email: UserClass["email"]
 ) {
-  return this.findOne({ email: email });
+  return this.findOne({ email });
 }
 
 @queryMethod(findByEmail)

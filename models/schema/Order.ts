@@ -1,8 +1,17 @@
-import { getModelForClass, pre, prop } from "@typegoose/typegoose";
+import { getModelForClass, pre, prop, queryMethod } from "@typegoose/typegoose";
+import { AsQueryMethod, ReturnModelType } from "@typegoose/typegoose/lib/types";
 import { models } from "mongoose";
 
-interface OrderClassSchemaQueryHelpers {}
-
+interface OrderClassSchemaQueryHelpers {
+  findAllByUser: AsQueryMethod<typeof findAllByUser>;
+}
+function findAllByUser(
+  this: ReturnModelType<typeof OrderClass, OrderClassSchemaQueryHelpers>,
+  userId: OrderClass["userId"]
+) {
+  return this.findOne({ userId });
+}
+@queryMethod(findAllByUser)
 @pre<OrderClass>("save", function () {
   this.when_created = new Date().toISOString();
 })
