@@ -16,13 +16,14 @@ const googleCred = {
   },
 };
 
-interface CustomSession extends Session {
+export interface CustomSession extends Session {
   id: string;
 }
 export const authOptions: NextAuthOptions = {
   providers: [GoogleProvider(googleCred)],
   callbacks: {
     async session({ session, user }) {
+      await connectToDB();
       if (session.user?.email) {
         const sessionUser = await UserModel.find().findByEmail(
           session.user?.email

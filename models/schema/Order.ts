@@ -1,11 +1,11 @@
 import { getModelForClass, pre, prop } from "@typegoose/typegoose";
+import { models } from "mongoose";
 
 interface OrderClassSchemaQueryHelpers {}
 
 @pre<OrderClass>("save", function () {
   this.when_created = new Date().toISOString();
 })
-
 export class OrderClass {
   @prop()
   userId!: String;
@@ -19,9 +19,11 @@ export class OrderClass {
   notes?: String;
 }
 
-export const OrderModel = getModelForClass<
-typeof OrderClass,
-OrderClassSchemaQueryHelpers
->(OrderClass, {
-options: { customName: "Order" },
-});
+export const OrderModel =
+  models.Order ||
+  getModelForClass<typeof OrderClass, OrderClassSchemaQueryHelpers>(
+    OrderClass,
+    {
+      options: { customName: "Order" },
+    }
+  );
