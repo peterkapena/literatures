@@ -1,16 +1,11 @@
 "use client";
 import { Alert, Box, Grid, IconButton, Typography } from "@mui/joy";
 import React, { useState } from "react";
-import Sheet from "@mui/joy/Sheet";
 import Button from "@mui/joy/Button";
-import {
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSchema, FormSchemaType, ValidationResult } from "./form-schema";
 import { createOrder } from "./_actions";
-import { styled } from "@mui/joy/styles";
 import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
 import with_auth from "@/app/with_auth";
@@ -18,22 +13,11 @@ import { useSession } from "next-auth/react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const Item = styled(Sheet)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark" ? theme.palette.background.level1 : "#fff",
-  ...theme.typography["body-sm"],
-  padding: theme.spacing(1),
-  textAlign: "center",
-  borderRadius: 4,
-  color: theme.vars.palette.text.secondary,
-}));
-
 const NewOrder = () => {
-  // const [data, setData] = useState<FormSchemaType>();
   const [result, setResult] = useState<ValidationResult>();
   const { data: session } = useSession();
   const [showSubmitButton, setShowSubmitButton] = useState(true);
-  // console.log(session);
+
   const {
     register,
     handleSubmit,

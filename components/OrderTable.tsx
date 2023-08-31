@@ -6,12 +6,12 @@ import ListItemButton from "@mui/joy/ListItemButton";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import { Delete } from "@mui/icons-material";
-import { IconButton } from "@mui/joy";
-import { getOrders } from "@/app/order/create/_actions";
+import { Box, IconButton } from "@mui/joy";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { OrderClass } from "@/models/schema/Order";
 import { useRouter } from "next/navigation";
+import { getOrders } from "@/app/order/create/_actions";
 
 export async function generateStaticParams() {
   const posts = await fetch("https://.../posts").then((res) => res.json());
@@ -30,8 +30,8 @@ export default function ExampleIOSList() {
     (async function () {
       const strOrders = await getOrders(session?.id);
       const orders: OrderClass[] = JSON.parse(strOrders);
-      // console.log(orders);
       setData(orders);
+      // console.log(session?.id);
     })();
   }, []);
 
@@ -77,45 +77,63 @@ export default function ExampleIOSList() {
           },
         })}
       >
-        {data?.map((d, i) => (
-          <ListItem nested key={d._id}>
-            <ListItemButton
-              sx={{ borderRadius: 5 }}
-              onClick={() => {
-                console.log("order/edit");
-                router.push("order/edit");
-              }}
-            >
-              <List
-                aria-label="Personal info"
-                sx={{ "--ListItemDecorator-size": "72px" }}
-              >
-                <ListItem
-                  sx={{ py: 1 }}
-                  endAction={
-                    <IconButton aria-label="Delete" size="sm" color="danger">
-                      <Delete />
-                    </IconButton>
-                  }
+        {data ? (
+          <>
+            {data.map((d, i) => (
+              <ListItem nested key={i}>
+                <ListItemButton
+                  sx={{ borderRadius: 5 }}
+                  onClick={() => {
+                    router.push("order/edit/" + d._id?.toString());
+                  }}
                 >
-                  <div>
-                    <Typography fontSize="xl">{d.literature}</Typography>
-                    <Typography fontSize="xs">
-                      {new Date(d.when_created).toLocaleString()}
-                    </Typography>
-                  </div>
-                </ListItem>
+                  <List
+                    aria-label="Personal info"
+                    sx={{ "--ListItemDecorator-size": "72px" }}
+                  >
+                    <ListItem
+                      sx={{ py: 1 }}
+                      endAction={
+                        <IconButton
+                          aria-label="Delete"
+                          size="sm"
+                          color="danger"
+                        >
+                          <Delete />
+                        </IconButton>
+                      }
+                    >
+                      <div>
+                        <Typography fontSize="xl">{d.literature}</Typography>
+                        {d.when_created?.toString() && (
+                          <Typography fontSize="xs">
+                            {new Date(
+                              d.when_created?.toString()
+                            ).toLocaleString()}
+                          </Typography>
+                        )}
+                      </div>
+                    </ListItem>
 
-                <ListDivider inset="startContent" />
-                {d.notes && (
-                  <ListItem>
-                    <ListItemContent>{d.notes}</ListItemContent>
-                  </ListItem>
-                )}
-              </List>
-            </ListItemButton>
-          </ListItem>
-        ))}
+                    <ListDivider inset="startContent" />
+                    {d.notes && (
+                      <ListItem>
+                        <ListItemContent>{d.notes}</ListItemContent>
+                      </ListItem>
+                    )}
+                  </List>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </>
+        ) : (
+          <Box>
+            <Typography level="body-lg">No orders done yet!</Typography>
+            <Typography level="title-sm">
+              Use the button above to submit one!
+            </Typography>
+          </Box>
+        )}
       </List>
     </Sheet>
   );

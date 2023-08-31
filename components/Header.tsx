@@ -4,15 +4,14 @@ import GlobalStyles from "@mui/joy/GlobalStyles";
 import Sheet from "@mui/joy/Sheet";
 import IconButton from "@mui/joy/IconButton";
 import ColorSchemeToggle from "./ColorSchemeToggle";
-import { Box, Avatar, Typography, Button } from "@mui/joy";
-import {
-  signOut,
-  useSession,
-} from "next-auth/react";
+import { Box, Avatar, Typography, Button, ButtonGroup } from "@mui/joy";
+import { signOut, useSession } from "next-auth/react";
 import { APP_NAME } from "@/utils/constants";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   return (
     <Sheet
@@ -42,7 +41,14 @@ export default function Header() {
       {session?.user ? (
         <>
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            <Avatar variant="outlined" src={session?.user.image || ""} />
+            <Avatar
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                router.push("/");
+              }}
+              variant="outlined"
+              src={session?.user.image || ""}
+            />
             <Box sx={{ minWidth: 0, flex: 1 }}>
               <Typography fontSize="sm" fontWeight="lg">
                 {session?.user.name}
@@ -66,7 +72,7 @@ export default function Header() {
         </>
       ) : (
         <>
-        <Typography>{APP_NAME}</Typography>
+          <Typography>{APP_NAME}</Typography>
         </>
       )}
       <ColorSchemeToggle id={undefined} />
