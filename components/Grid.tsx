@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import { styled } from "@mui/joy/styles";
 import Sheet from "@mui/joy/Sheet";

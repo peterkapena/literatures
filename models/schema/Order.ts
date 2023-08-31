@@ -3,20 +3,19 @@ import { getModelForClass, pre, prop } from "@typegoose/typegoose";
 @pre<OrderClass>("save", function () {
   this.when = new Date();
 })
-
 class OrderClass {
   @prop()
-  public _id?: String;
+  _id?: String;
   @prop()
-  public userId!: String;
+  userId!: String;
   @prop()
-  public literature!: String;
+  literature!: String;
   @prop()
-  public quantity!: String;
+  quantity!: String;
   @prop()
-  public when!: Date;
+  when!: Date;
   @prop({})
-  public notes?: String;
+  notes?: String;
 }
 
 export const OrderModel = getModelForClass(OrderClass);

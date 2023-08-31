@@ -1,12 +1,13 @@
-"use client";
+"use client"
 import * as React from "react";
 import { styled } from "@mui/joy/styles";
 import Sheet from "@mui/joy/Sheet";
 import NextLink from "next/link";
 import Grid from "@mui/joy/Grid";
 import { Box, Button, Typography } from "@mui/joy";
+import with_auth from "./with_auth";
 
-export default function ResponsiveGrid() {
+const Page = () => {
   return (
     <Grid
       container
@@ -18,10 +19,12 @@ export default function ResponsiveGrid() {
         <Typography level="h2">Orders</Typography>
       </Grid>
       <Grid xs={2} sm={4} md={6}>
-        <NextLink href="/create-order">
+        <NextLink href="/order/create">
           <Button size="sm">Make an order</Button>
         </NextLink>
       </Grid>
     </Grid>
   );
-}
+};
+
+export default with_auth(Page);

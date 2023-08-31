@@ -1,4 +1,3 @@
-"use client";
 import { FormHelperText } from "@mui/joy";
 import React, { InputHTMLAttributes } from "react";
 import FormControl from "@mui/joy/FormControl";
@@ -23,7 +22,7 @@ export default function ({
   ...rest
 }: TextFieldProps) {
   const valueAsNumber = type === "number";
-  
+
   return (
     <FormControl>
       <FormLabel>{label}</FormLabel>
