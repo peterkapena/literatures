@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Box, Grid, Typography } from "@mui/joy";
 import React, { FormEvent, useState } from "react";
 import { CssVarsProvider, useColorScheme } from "@mui/joy/styles";
@@ -13,10 +13,12 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSchema, FormSchemaType } from "./form-schema";
-import { addEntry } from "./_actions";
+import { createOrder } from "./_actions";
 import { styled } from "@mui/joy/styles";
 import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
+import with_auth from "@/app/with_auth";
+import { useSession } from "next-auth/react";
 
 const Item = styled(Sheet)(({ theme }) => ({
   backgroundColor:
@@ -27,8 +29,10 @@ const Item = styled(Sheet)(({ theme }) => ({
   borderRadius: 4,
   color: theme.vars.palette.text.secondary,
 }));
+
 const NewOrder = () => {
   const [data, setData] = useState<FormSchemaType>();
+  const { data: session, status } = useSession();
 
   const {
     register,
@@ -41,7 +45,7 @@ const NewOrder = () => {
   });
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
-    const result = await addEntry(data);
+    const result = await createOrder(data, session?.user.id);
 
     if (!result) {
       console.log("Something went wrong");
@@ -128,4 +132,4 @@ const NewOrder = () => {
   );
 };
 
-export default NewOrder;
+export default with_auth(NewOrder);

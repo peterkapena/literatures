@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 const googleCred = {
@@ -13,17 +13,31 @@ const googleCred = {
   },
 };
 
-// console.log(googleCred.clientSecret);
-
 export const authOptions: NextAuthOptions = {
   providers: [GoogleProvider(googleCred)],
 
   callbacks: {
-    async session({ session }) {
+    async session({ session, user }) {
       return session;
     },
     async signIn({ account, profile }) {
-      return true; // Do different verification for other providers that don't have `email_verified`
+      try {
+        // const user: UserClass = {
+        //   email: profile?.email || "",
+        //   name: profile?.name || "",
+        //   image: profile?.image || "",
+        // };
+
+        // await new UserService().createUser({
+        //   email: profile?.email || "",
+        //   name: profile?.name || "",
+        //   image: profile?.image || "",
+        // });
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
     },
   },
 };
