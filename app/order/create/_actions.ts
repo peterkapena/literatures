@@ -69,3 +69,7 @@ export async function edit(
 
   return false;
 }
+
+export async function _delete(id: string): Promise<boolean> {
+  return await (await OrderService._()).delete(id);
+}

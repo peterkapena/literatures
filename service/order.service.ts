@@ -41,4 +41,7 @@ export default class OrderService {
     );
     return rtn.acknowledged;
   }
+  async delete(id: string): Promise<boolean> {
+    return (await OrderModel.deleteOne({ _id: id })).deletedCount > 0;
+  }
 }

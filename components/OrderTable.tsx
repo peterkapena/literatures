@@ -5,13 +5,14 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemButton from "@mui/joy/ListItemButton";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import { Delete } from "@mui/icons-material";
-import { Box, IconButton } from "@mui/joy";
+import { DateRangeOutlined, Delete, Edit } from "@mui/icons-material";
+import { Box, Chip, IconButton } from "@mui/joy";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { OrderClass } from "@/models/schema/Order";
 import { useRouter } from "next/navigation";
-import { getOrders } from "@/app/order/create/_actions";
+import { _delete, getOrders } from "@/app/order/create/_actions";
+import AlertDialogModal from "./Alert";
 
 export async function generateStaticParams() {
   const posts = await fetch("https://.../posts").then((res) => res.json());
@@ -25,18 +26,35 @@ export default function ExampleIOSList() {
   const { data: session } = useSession();
   const [data, setData] = useState<OrderClass[]>();
   const router = useRouter();
+  const [orderIdToDelete, setOrderIdToDelete] = useState("");
+
+  async function fetchOrders() {
+    const strOrders = await getOrders(session?.id);
+    const orders: OrderClass[] = JSON.parse(strOrders);
+    setData(orders);
+  }
 
   useEffect(() => {
-    (async function () {
-      const strOrders = await getOrders(session?.id);
-      const orders: OrderClass[] = JSON.parse(strOrders);
-      setData(orders);
-      // console.log(session?.id);
-    })();
+    fetchOrders();
   }, []);
 
   return (
     <Sheet variant="soft" sx={{ p: 2, borderRadius: "sm" }}>
+      {orderIdToDelete && (
+        <AlertDialogModal
+          onYes={() => {
+            _delete(orderIdToDelete).then(async () => {
+              fetchOrders();
+              setOrderIdToDelete("");
+            });
+          }}
+          onClose={() => {
+            setOrderIdToDelete("");
+            console.log("close");
+          }}
+          message="Are you sure you want to delete?"
+        ></AlertDialogModal>
+      )}
       <Typography
         level="h3"
         fontSize="xl2"
@@ -77,16 +95,11 @@ export default function ExampleIOSList() {
           },
         })}
       >
-        {data ? (
+        {data && data?.length > 0 ? (
           <>
             {data.map((d, i) => (
               <ListItem nested key={i}>
-                <ListItemButton
-                  sx={{ borderRadius: 5 }}
-                  onClick={() => {
-                    router.push("order/edit/" + d._id?.toString());
-                  }}
-                >
+                <ListItemButton sx={{ borderRadius: 5 }}>
                   <List
                     aria-label="Personal info"
                     sx={{ "--ListItemDecorator-size": "72px" }}
@@ -94,13 +107,34 @@ export default function ExampleIOSList() {
                     <ListItem
                       sx={{ py: 1 }}
                       endAction={
-                        <IconButton
-                          aria-label="Delete"
-                          size="sm"
-                          color="danger"
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
                         >
-                          <Delete />
-                        </IconButton>
+                          <IconButton
+                            aria-label="Delete"
+                            size="md"
+                            color="success"
+                            onClick={() => {
+                              router.push("order/edit/" + d._id?.toString());
+                            }}
+                          >
+                            <Edit />
+                          </IconButton>
+                          <IconButton
+                            aria-label="Delete"
+                            size="lg"
+                            color="danger"
+                            sx={{ mx: 2 }}
+                            onClick={() => {
+                              if (d._id) setOrderIdToDelete(d._id?.toString());
+                            }}
+                          >
+                            <Delete />
+                          </IconButton>
+                        </Box>
                       }
                     >
                       <div>
