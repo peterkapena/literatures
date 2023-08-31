@@ -6,8 +6,8 @@ interface OrderClassSchemaQueryHelpers {}
 @pre<OrderClass>("save", function () {
   this.when_created = new Date().toISOString();
 })
-
 export class OrderClass {
+  _id?: String;
   @prop()
   userId!: String;
   @prop()

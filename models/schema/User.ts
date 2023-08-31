@@ -24,6 +24,7 @@ function findByEmail(
   this.when_created = new Date().toISOString();
 })
 class UserClass {
+  _id?: String;
   @prop()
   email!: string;
 

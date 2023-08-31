@@ -1,21 +1,24 @@
 "use server";
 import OrderService from "@/service/order.service";
-import { FormSchemaType, FormSchema } from "./form-schema";
+import { FormSchemaType, FormSchema, ValidationResult } from "./form-schema";
 
-export async function createOrder(data: FormSchemaType, userId: string) {
+export async function createOrder(
+  data: FormSchemaType,
+  userId: string
+): Promise<ValidationResult> {
   const result = FormSchema.safeParse(data);
 
   if (result.success) {
-    await new OrderService().createOrder({
-      ...result.data,
-      userId,
-      when_created: "",
-    });
-
-    return { success: true, data: result.data };
+    try {
+      const order = await new OrderService().createOrder({
+        ...result.data,
+        userId,
+      });
+      return { success: true, data, _id: order._id?.toString() };
+    } catch (error) {
+      return { success: true, data };
+    }
   }
 
-  if (result.error) {
-    return { success: false, error: result.error.format() };
-  }
+  return { success: false, data };
 }

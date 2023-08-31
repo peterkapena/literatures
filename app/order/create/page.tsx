@@ -1,5 +1,5 @@
 "use client";
-import { Box, Grid, Typography } from "@mui/joy";
+import { Alert, Box, Grid, IconButton, Typography } from "@mui/joy";
 import React, { FormEvent, useState } from "react";
 import { CssVarsProvider, useColorScheme } from "@mui/joy/styles";
 import Sheet from "@mui/joy/Sheet";
@@ -12,13 +12,16 @@ import {
   useForm,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormSchema, FormSchemaType } from "./form-schema";
+import { FormSchema, FormSchemaType, ValidationResult } from "./form-schema";
 import { createOrder } from "./_actions";
 import { styled } from "@mui/joy/styles";
 import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
 import with_auth from "@/app/with_auth";
 import { useSession } from "next-auth/react";
+import { title } from "process";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const Item = styled(Sheet)(({ theme }) => ({
   backgroundColor:
@@ -31,8 +34,10 @@ const Item = styled(Sheet)(({ theme }) => ({
 }));
 
 const NewOrder = () => {
-  const [data, setData] = useState<FormSchemaType>();
+  // const [data, setData] = useState<FormSchemaType>();
+  const [result, setResult] = useState<ValidationResult>();
   const { data: session, status } = useSession();
+  const [showSubmitButton, setShowSubmitButton] = useState(true);
   // console.log(session);
   const {
     register,
@@ -51,15 +56,9 @@ const NewOrder = () => {
       console.log("Something went wrong");
       return;
     }
-
-    if (result.error) {
-      // set local error state
-      console.log(result.error);
-      return;
-    }
-
+    setShowSubmitButton(false);
     reset();
-    setData(result.data);
+    setResult(result);
   };
   return (
     <Box
@@ -120,14 +119,47 @@ const NewOrder = () => {
             ></TextArea>
           </Grid>
         </Grid>
-
-        <Button type="submit" sx={{ mt: 3 }}>
-          Submit
-        </Button>
+        {showSubmitButton && (
+          <Button type="submit" sx={{ mt: 3 }}>
+            Submit
+          </Button>
+        )}
+        {!showSubmitButton && result?.success && (
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              width: "100%",
+              flexDirection: "column",
+              mt: 3,
+            }}
+          >
+            <Alert
+              key={"Success"}
+              sx={{ alignItems: "flex-start" }}
+              startDecorator={<CheckCircleIcon />}
+              variant="soft"
+              color={"success"}
+              endDecorator={
+                <IconButton
+                  variant="soft"
+                  color={"success"}
+                  onClick={() => setShowSubmitButton(true)}
+                >
+                  <CloseRoundedIcon />
+                </IconButton>
+              }
+            >
+              <div>
+                <div>{"Success"}</div>
+                <Typography level="body-sm" color={"success"}>
+                  Order has been submitted.
+                </Typography>
+              </div>
+            </Alert>
+          </Box>
+        )}
       </form>
-      <div>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      </div>
     </Box>
   );
 };
