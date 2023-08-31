@@ -16,13 +16,29 @@ const googleCred = {
   },
 };
 
+interface CustomSession extends Session {
+  id: string;
+}
 export const authOptions: NextAuthOptions = {
   providers: [GoogleProvider(googleCred)],
-
   callbacks: {
     async session({ session, user }) {
+      if (session.user?.email) {
+        const sessionUser = await UserModel.find().findByEmail(
+          session.user?.email
+        );
+        if (sessionUser?.id) {
+          console.log(session.user?.email);
+          const customSession: CustomSession = {
+            ...session,
+            id: sessionUser.id,
+          };
+          return customSession;
+        }
+      }
       return session;
     },
+
     async signIn({ account, profile }) {
       try {
         await connectToDB();
@@ -31,8 +47,8 @@ export const authOptions: NextAuthOptions = {
           name: profile?.name || "",
           image: profile?.image || "",
         };
-        if (!UserModel.find().findByEmail(user.email))
-          await new UserService().createUser(user);
+
+        await new UserService().createUser(user);
         return true;
       } catch (error) {
         console.log(error);
