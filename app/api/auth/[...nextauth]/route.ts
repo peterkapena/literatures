@@ -1,3 +1,6 @@
+import { UserClass, UserModel } from "@/models/schema/User";
+import { connectToDB } from "@/service/mongo";
+import UserService from "@/service/user.service";
 import NextAuth, { NextAuthOptions, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -22,17 +25,14 @@ export const authOptions: NextAuthOptions = {
     },
     async signIn({ account, profile }) {
       try {
-        // const user: UserClass = {
-        //   email: profile?.email || "",
-        //   name: profile?.name || "",
-        //   image: profile?.image || "",
-        // };
-
-        // await new UserService().createUser({
-        //   email: profile?.email || "",
-        //   name: profile?.name || "",
-        //   image: profile?.image || "",
-        // });
+        await connectToDB();
+        const user: UserClass = {
+          email: profile?.email || "",
+          name: profile?.name || "",
+          image: profile?.image || "",
+        };
+        if (!UserModel.find().findByEmail(user.email))
+          await new UserService().createUser(user);
         return true;
       } catch (error) {
         console.log(error);

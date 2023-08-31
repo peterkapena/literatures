@@ -1,5 +1,5 @@
 "use server";
-import OrderService from "@/app/service/order.service";
+import OrderService from "@/service/order.service";
 import { FormSchemaType, FormSchema } from "./form-schema";
 
 export async function createOrder(data: FormSchemaType, userId: string) {

@@ -1,4 +1,4 @@
-import { OrderClass, OrderModel } from "../models/schema/Order";
+ import { OrderClass, OrderModel } from "@/models/schema/Order";
 import {coonectDB} from "./mongo";
 
 export default class OrderService {
