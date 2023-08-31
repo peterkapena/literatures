@@ -19,7 +19,6 @@ import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
 import with_auth from "@/app/with_auth";
 import { useSession } from "next-auth/react";
-import { CustomSession } from "@/app/api/auth/[...nextauth]/route";
 
 const Item = styled(Sheet)(({ theme }) => ({
   backgroundColor:
@@ -34,7 +33,7 @@ const Item = styled(Sheet)(({ theme }) => ({
 const NewOrder = () => {
   const [data, setData] = useState<FormSchemaType>();
   const { data: session, status } = useSession();
-  console.log(session);
+  // console.log(session);
   const {
     register,
     handleSubmit,
