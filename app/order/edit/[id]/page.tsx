@@ -75,6 +75,7 @@ const NewOrder = ({ params: id }: { params: { id: string } }) => {
         boxShadow: "md",
       }}
     >
+      <Typography level="h3">Editing order</Typography>
       {order?._id ? (
         <Box>
           <div>
@@ -82,10 +83,13 @@ const NewOrder = ({ params: id }: { params: { id: string } }) => {
               <Box
                 sx={{ mb: 2, display: "flex", justifyContent: "flex-start" }}
               >
+                <Typography level="body-md" sx={{ mr: 1 }}>
+                  Submitted on
+                </Typography>
                 <Chip
                   color="success"
-                  variant="soft"
-                  endDecorator={<DateRangeOutlined fontSize="md" />}
+                  variant="outlined"
+                  endDecorator={<DateRangeOutlined fontSize="medium" />}
                 >
                   {order?.when_created &&
                     new Date(order?.when_created?.toString()).toLocaleString()}
@@ -97,6 +101,7 @@ const NewOrder = ({ params: id }: { params: { id: string } }) => {
             <Grid container spacing={{ xs: 2, md: 3 }} sx={{ flexGrow: 1 }}>
               <Grid xs={12} sm={8} md={8} key={5}>
                 <TextField
+                  disabled={Boolean(!showSubmitButton && result)}
                   defaultValue={order.literature.toString()}
                   label={"Literature"}
                   fieldName="literature"
@@ -108,6 +113,7 @@ const NewOrder = ({ params: id }: { params: { id: string } }) => {
               </Grid>
               <Grid xs={12} sm={4} md={4} key={4}>
                 <TextField
+                  disabled={Boolean(!showSubmitButton && result)}
                   defaultValue={+order.quantity}
                   label={"Quantity"}
                   fieldName="quantity"
@@ -119,6 +125,7 @@ const NewOrder = ({ params: id }: { params: { id: string } }) => {
               </Grid>
               <Grid xs={12} sm={12} md={12} key={3}>
                 <TextArea
+                  disabled={Boolean(!showSubmitButton && result)}
                   defaultValue={order?.notes?.toString()}
                   register={register}
                   fieldError={errors.notes}

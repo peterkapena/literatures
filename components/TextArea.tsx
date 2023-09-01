@@ -12,6 +12,8 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   fieldError: FieldError | undefined;
   fieldName: string;
   label: string;
+  minRows?: string | number;
+  maxRows?: string | number;
 }
 
 export default function ({

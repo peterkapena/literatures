@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { data: session, status } = useSession();
-  const router = useRouter();
+  const {push} = useRouter();
 
   return (
     <Sheet
@@ -44,7 +44,7 @@ export default function Header() {
             <Avatar
               sx={{ cursor: "pointer" }}
               onClick={() => {
-                router.push("/");
+                push("/");
               }}
               variant="outlined"
               src={session?.user.image || ""}

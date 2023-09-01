@@ -56,7 +56,7 @@ export default function AlertDialogModal({
             }}
           >
             <Button
-              variant="plain"
+              variant="outlined"
               color="danger"
               onClick={() => {
                 onYes();
@@ -65,7 +65,7 @@ export default function AlertDialogModal({
             >
               Yes
             </Button>
-            <Button variant="soft" color="neutral" onClick={close}>
+            <Button variant="outlined" color="primary" onClick={close}>
               Cancel
             </Button>
           </Box>

@@ -9,15 +9,16 @@ const Page = () => {
   return (
     <Box
       sx={(theme) => ({
+        p: 3,
         minWidth: "50%",
         [theme.breakpoints.down("md")]: {
           minWidth: "85%",
         },
       })}
     >
-      <Box sx={{ mb: 5 }}>
+      <Box sx={{ mb: 5, display: "flex" }}>
         <NextLink href="/order/create">
-          <Button fullWidth size="sm">
+          <Button fullWidth size="md" color="warning">
             Make an order
           </Button>
         </NextLink>

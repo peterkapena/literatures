@@ -6,13 +6,14 @@ import ListItemButton from "@mui/joy/ListItemButton";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import { DateRangeOutlined, Delete, Edit } from "@mui/icons-material";
-import { Box, Chip, IconButton } from "@mui/joy";
+import { Box, Chip, Grid, IconButton } from "@mui/joy";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { OrderClass } from "@/models/schema/Order";
 import { useRouter } from "next/navigation";
 import { _delete, getOrders } from "@/app/order/create/_actions";
 import AlertDialogModal from "./Alert";
+import OrderCard from "./OrderCard";
 
 export async function generateStaticParams() {
   const posts = await fetch("https://.../posts").then((res) => res.json());
@@ -25,7 +26,7 @@ export async function generateStaticParams() {
 export default function ExampleIOSList() {
   const { data: session } = useSession();
   const [data, setData] = useState<OrderClass[]>();
-  const router = useRouter();
+  const { push } = useRouter();
   const [orderIdToDelete, setOrderIdToDelete] = useState("");
 
   async function fetchOrders() {
@@ -97,68 +98,21 @@ export default function ExampleIOSList() {
       >
         {data && data?.length > 0 ? (
           <>
-            {data.map((d, i) => (
-              <ListItem nested key={i}>
-                <ListItemButton sx={{ borderRadius: 5 }}>
-                  <List
-                    aria-label="Personal info"
-                    sx={{ "--ListItemDecorator-size": "72px" }}
-                  >
-                    <ListItem
-                      sx={{ py: 1 }}
-                      endAction={
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <IconButton
-                            aria-label="Delete"
-                            size="md"
-                            color="success"
-                            onClick={() => {
-                              router.push("order/edit/" + d._id?.toString());
-                            }}
-                          >
-                            <Edit />
-                          </IconButton>
-                          <IconButton
-                            aria-label="Delete"
-                            size="lg"
-                            color="danger"
-                            sx={{ mx: 2 }}
-                            onClick={() => {
-                              if (d._id) setOrderIdToDelete(d._id?.toString());
-                            }}
-                          >
-                            <Delete />
-                          </IconButton>
-                        </Box>
-                      }
-                    >
-                      <div>
-                        <Typography fontSize="xl">{d.literature}</Typography>
-                        {d.when_created?.toString() && (
-                          <Typography fontSize="xs">
-                            {new Date(
-                              d.when_created?.toString()
-                            ).toLocaleString()}
-                          </Typography>
-                        )}
-                      </div>
-                    </ListItem>
-
-                    <ListDivider inset="startContent" />
-                    {d.notes && (
-                      <ListItem>
-                        <ListItemContent>{d.notes}</ListItemContent>
-                      </ListItem>
-                    )}
-                  </List>
-                </ListItemButton>
-              </ListItem>
-            ))}
+            <Grid container spacing={{ xs: 2, md: 3 }} sx={{ flexGrow: 1 }}>
+              {data.map((d, i) => (
+                <Grid key={i} xs={12} sm={6} md={4} lg={3}>
+                  <OrderCard
+                    order={d}
+                    onDelete={() => {
+                      if (d._id) setOrderIdToDelete(d._id?.toString());
+                    }}
+                    onEdit={() => {
+                      push("order/edit/" + d._id?.toString());
+                    }}
+                  ></OrderCard>
+                </Grid>
+              ))}
+            </Grid>
           </>
         ) : (
           <Box>

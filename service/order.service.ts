@@ -12,16 +12,16 @@ export default class OrderService {
   }
 
   async getOrdersByUser(userId: String): Promise<OrderClass[]> {
-    const rtn = (await OrderModel.find({ userId })).map(
-      (order: OrderClass) => order
-    );
-    // console.log(rtn);
-
+    const rtn = (
+      await OrderModel.find({ userId }).sort({ when_created: -1 })
+    ).map((order: OrderClass) => order);
     return rtn;
   }
 
   async getOrders() {
-    const rtn = (await OrderModel.find()).map((order: OrderClass) => order);
+    const rtn = (await OrderModel.find().sort({ when_created: -1 })).map(
+      (order: OrderClass) => order
+    );
     return rtn;
   }
   async getOrder(_id: String): Promise<OrderClass> {

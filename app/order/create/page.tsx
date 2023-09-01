@@ -12,11 +12,13 @@ import with_auth from "@/app/with_auth";
 import { useSession } from "next-auth/react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useRouter } from "next/navigation";
 
 const NewOrder = () => {
   const [result, setResult] = useState<ValidationResult>();
   const { data: session } = useSession();
   const [showSubmitButton, setShowSubmitButton] = useState(true);
+  const { push } = useRouter();
 
   const {
     register,
@@ -29,7 +31,7 @@ const NewOrder = () => {
   });
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
-    const result = await createOrder(data, session?.id);
+    const result = await createOrder(data, (session as any)?.id);
 
     if (!result) {
       console.log("Something went wrong");
@@ -68,6 +70,7 @@ const NewOrder = () => {
         >
           <Grid xs={12} sm={8} md={8} key={5}>
             <TextField
+              disabled={Boolean(!showSubmitButton && result)}
               label={"Literature details (title, year, edition, etc..)"}
               fieldName="literature"
               placeholder="Literature"
@@ -78,6 +81,7 @@ const NewOrder = () => {
           </Grid>
           <Grid xs={12} sm={4} md={4} key={4}>
             <TextField
+              disabled={Boolean(!showSubmitButton && result)}
               label={"Quantity"}
               fieldName="quantity"
               placeholder="Quantity"
@@ -88,6 +92,7 @@ const NewOrder = () => {
           </Grid>
           <Grid xs={12} sm={12} md={12} key={3}>
             <TextArea
+              disabled={Boolean(!showSubmitButton && result)}
               register={register}
               fieldError={errors.notes}
               fieldName="notes"
@@ -120,13 +125,26 @@ const NewOrder = () => {
               variant="soft"
               color={"success"}
               endDecorator={
-                <IconButton
-                  variant="soft"
-                  color={"success"}
-                  onClick={() => setShowSubmitButton(true)}
-                >
-                  <CloseRoundedIcon />
-                </IconButton>
+                <Box sx={{ display: { xs: "inline-grid", sm: "flex" } }}>
+                  <IconButton
+                    variant="solid"
+                    color={"success"}
+                    onClick={() => {
+                      push("/order/edit/" + result._id);
+                    }}
+                    sx={{ m: 2, mb: 0, px: 1, pb: 0.5 }}
+                  >
+                    Go to it
+                  </IconButton>
+                  <IconButton
+                    variant="solid"
+                    color={"success"}
+                    sx={{ m: 2, mb: 0, px: 1, pb: 0.5 }}
+                    onClick={() => setShowSubmitButton(true)}
+                  >
+                    Submit another
+                  </IconButton>
+                </Box>
               }
             >
               <div>
