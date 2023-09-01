@@ -12,9 +12,9 @@ export async function connectToDB() {
         break;
 
       default:
-        const url = process.env.MONGO_SERVER || "" + process.env.MONGO_DATABASE;
+        const url = process.env.MONGO_SERVER || "";
         await mongoose.connect(url, { dbName: process.env.MONGO_DATABASE });
-        // console.log(url);
+      // console.log(url);
     }
   } catch (error) {
     // console.log("from mongo");

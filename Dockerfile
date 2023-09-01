@@ -25,11 +25,13 @@ ENV NODE_ENV production
 RUN npm run build
 
 # Expose the port your app will run on
-EXPOSE 4000
+EXPOSE 3000
 
 # Use 'forever' to run your Next.js app with the specified options
-CMD ["npm start"]
+CMD ["npm", "start", "--", "-p", "3000"]
 
+
+#                           docker build -t grower_management .
 #                           docker run -dp 4000:4000 grower_management (optional)
 #                           docker tag grower_management  kapenapeter/grower_management
 #                           docker push kapenapeter/grower_management

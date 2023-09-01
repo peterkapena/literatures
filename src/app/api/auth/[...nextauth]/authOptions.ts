@@ -43,8 +43,8 @@ export const authOptions: NextAuthOptions = {
 
     async signIn({ profile }) {
       try {
-        await connectToDB();
-        const user: UserClass = {
+                await connectToDB();
+                const user: UserClass = {
           email: profile?.email || "",
           name: profile?.name || "",
           image: profile?.image || "",
