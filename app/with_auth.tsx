@@ -1,12 +1,19 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+ 
 
-export default function (WrappedComponent: React.ComponentType) {
+export interface WithAuthProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function (WrappedComponent: React.ComponentType<WithAuthProps>) {
   return function AuthenticatedPage(props: any) {
     const { data: session, status } = useSession();
-    const {push} = useRouter();
+    const { push } = useRouter();
 
     // Check if the session is loading
     if (status === "loading") {
@@ -19,7 +26,7 @@ export default function (WrappedComponent: React.ComponentType) {
       return null;
     }
 
-    // If authenticated, render the wrapped component
+    // If authenticated, render the wrapped component with props
     return <WrappedComponent {...props} />;
   };
 }

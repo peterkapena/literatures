@@ -16,10 +16,11 @@ import AlertDialogModal from "./Alert";
 import OrderCard from "./OrderCard";
 
 export async function generateStaticParams() {
-  const posts = await fetch("https://.../posts").then((res) => res.json());
+  const strOrders = await getOrders();
+  const orders: OrderClass[] = JSON.parse(strOrders);
 
-  return posts.map((post) => ({
-    slug: post.slug,
+  return orders.map((o) => ({
+    id: o._id,
   }));
 }
 
@@ -30,7 +31,7 @@ export default function ExampleIOSList() {
   const [orderIdToDelete, setOrderIdToDelete] = useState("");
 
   async function fetchOrders() {
-    const strOrders = await getOrders(session?.id);
+    const strOrders = await getOrders((session as any)?.id);
     const orders: OrderClass[] = JSON.parse(strOrders);
     setData(orders);
   }

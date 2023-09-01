@@ -24,12 +24,25 @@ export default function OrderCard({ order, onDelete, onEdit }: OrderCardProps) {
         </Typography>
       </div>
       <CardContent>
-        <Typography level="body-sm">{order.notes}</Typography>
-        <Box sx={{ mt: 2 }}>
-          <Typography level="body-xs">Quantity:</Typography>
-          <Typography fontSize="lg" fontWeight="lg">
-            {+order.quantity}
+        <Box sx={{ height: "150px" }}>
+          <Typography
+            level="body-md"
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: "4",
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            {order.notes}
           </Typography>
+          <Box sx={{ mt: 2 }}>
+            <Typography level="body-xs">Quantity:</Typography>
+            <Typography fontSize="lg" fontWeight="lg">
+              {+order.quantity}
+            </Typography>
+          </Box>
         </Box>
       </CardContent>
       <CardActions

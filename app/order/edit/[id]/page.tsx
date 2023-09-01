@@ -7,20 +7,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSchema, FormSchemaType, ValidationResult } from "../form-schema";
 import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
-import with_auth from "@/app/with_auth";
+import with_auth, { WithAuthProps } from "@/app/with_auth";
 import { useSession } from "next-auth/react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { edit, getOrder } from "../../create/_actions";
 import { OrderClass } from "@/models/schema/Order";
 import CheckIcon from "@mui/icons-material/Check";
-import { DateRangeOutlined, Save } from "@mui/icons-material";
+import { ArrowBack, DateRangeOutlined, Save } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
-const NewOrder = ({ params: id }: { params: { id: string } }) => {
+const NewOrder: React.FC<WithAuthProps> = ({ params: id }) => {
   const [result, setResult] = useState<Boolean>();
   const { data: session } = useSession();
   const [showSubmitButton, setShowSubmitButton] = useState(true);
   const [order, setOrder] = useState<OrderClass>();
+  const router = useRouter();
 
   useEffect(() => {
     getOrder(id.id).then((strOrder) => {
@@ -39,7 +41,11 @@ const NewOrder = ({ params: id }: { params: { id: string } }) => {
   });
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
-    const result = await edit(data, session?.id, order?._id?.toString());
+    const result = await edit(
+      data,
+      (session as any)?.id,
+      order?._id?.toString()
+    );
 
     if (result) {
       setShowSubmitButton(false);
@@ -138,14 +144,25 @@ const NewOrder = ({ params: id }: { params: { id: string } }) => {
               </Grid>
             </Grid>
             {showSubmitButton && (
-              <Button
-                type="submit"
-                sx={{ mt: 3 }}
-                variant="outlined"
-                startDecorator={<Save />}
-              >
-                Save
-              </Button>
+              <Box display={"flex"} justifyContent={"space-around"}>
+                <Button
+                  type="button"
+                  onClick={() => router.back()}
+                  sx={{ mt: 3 }}
+                  variant="plain"
+                  startDecorator={<ArrowBack />}
+                >
+                  Return
+                </Button>
+                <Button
+                  type="submit"
+                  sx={{ mt: 3 }}
+                  variant="outlined"
+                  startDecorator={<Save />}
+                >
+                  Save
+                </Button>
+              </Box>
             )}
             {!showSubmitButton && result && (
               <Box

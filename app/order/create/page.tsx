@@ -12,6 +12,7 @@ import with_auth from "@/app/with_auth";
 import { useSession } from "next-auth/react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { ArrowBack } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 
 const NewOrder = () => {
@@ -19,6 +20,7 @@ const NewOrder = () => {
   const { data: session } = useSession();
   const [showSubmitButton, setShowSubmitButton] = useState(true);
   const { push } = useRouter();
+  const router = useRouter();
 
   const {
     register,
@@ -104,9 +106,20 @@ const NewOrder = () => {
           </Grid>
         </Grid>
         {showSubmitButton && (
-          <Button type="submit" sx={{ mt: 3 }}>
-            Submit
-          </Button>
+          <Box display={"flex"} justifyContent={"space-around"}>
+            <Button
+              type="button"
+              onClick={() => router.back()}
+              sx={{ mt: 3 }}
+              variant="plain"
+              startDecorator={<ArrowBack />}
+            >
+              Return
+            </Button>
+            <Button type="submit" sx={{ mt: 3 }}>
+              Submit
+            </Button>
+          </Box>
         )}
         {!showSubmitButton && result?.success && (
           <Box
