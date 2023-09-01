@@ -10,7 +10,6 @@ import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
 import with_auth from "@/app/with_auth";
 import { useSession } from "next-auth/react";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { ArrowBack } from "@mui/icons-material";
 import { useRouter } from "next/navigation";

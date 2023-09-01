@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Button from "@mui/joy/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormSchema, FormSchemaType, ValidationResult } from "../form-schema";
 import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
 import with_auth, { WithAuthProps } from "@/app/with_auth";
@@ -13,9 +12,9 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { edit, getOrder } from "../../create/_actions";
 import { OrderClass } from "@/models/schema/Order";
-import CheckIcon from "@mui/icons-material/Check";
 import { ArrowBack, DateRangeOutlined, Save } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { FormSchemaType, FormSchema } from "../../create/form-schema";
 
 const NewOrder: React.FC<WithAuthProps> = ({ params: id }) => {
   const [result, setResult] = useState<Boolean>();

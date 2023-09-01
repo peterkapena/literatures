@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import { Box } from "@mui/joy";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
-import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Create Next App",

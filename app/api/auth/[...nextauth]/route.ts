@@ -22,12 +22,14 @@ export interface CustomSession extends Session {
 export const authOptions: NextAuthOptions = {
   providers: [GoogleProvider(googleCred)],
   callbacks: {
-    async session({ session, user }) {
+    async session({ session }) {
       await connectToDB();
       if (session.user?.email) {
-        const sessionUser = await UserModel.find().findByEmail(
-          session.user?.email
-        );
+        const sessionUser = await UserModel.findOne({
+          email: session.user?.email,
+        });
+
+        // console.log("findByEmail");
         if (sessionUser?.id) {
           console.log(session.user?.email);
           const customSession: CustomSession = {
@@ -40,7 +42,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
 
-    async signIn({ account, profile }) {
+    async signIn({ profile }) {
       try {
         await connectToDB();
         const user: UserClass = {
