@@ -37,6 +37,11 @@ const NewOrder: React.FC<WithAuthProps> = ({ params: id }) => {
     formState: { errors },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      literature: order?.literature.toString(),
+      // quantity: (order && +order?.quantity) ?? 0,
+      // notes: order?.notes?.toString() || "",
+    },
   });
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {

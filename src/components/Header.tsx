@@ -4,14 +4,14 @@ import GlobalStyles from "@mui/joy/GlobalStyles";
 import Sheet from "@mui/joy/Sheet";
 import IconButton from "@mui/joy/IconButton";
 import ColorSchemeToggle from "./ColorSchemeToggle";
-import { Box, Avatar, Typography, Button, ButtonGroup } from "@mui/joy";
+import { Box, Avatar, Typography, Button } from "@mui/joy";
 import { signOut, useSession } from "next-auth/react";
 import { APP_NAME } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
-  const { data: session, status } = useSession();
-  const {push} = useRouter();
+  const { data: session } = useSession();
+  const { push } = useRouter();
 
   return (
     <Sheet
@@ -32,7 +32,7 @@ export default function Header() {
       }}
     >
       <GlobalStyles
-        styles={(theme) => ({
+        styles={() => ({
           ":root": {
             "--Header-height": "52px",
           },

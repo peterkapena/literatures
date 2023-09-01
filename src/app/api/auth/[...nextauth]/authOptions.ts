@@ -1,7 +1,7 @@
 import { UserClass, UserModel } from "@/models/schema/User";
 import { connectToDB } from "@/service/mongo";
 import UserService from "@/service/user.service";
-import NextAuth, { NextAuthOptions, Session } from "next-auth";
+import { NextAuthOptions, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 const googleCred = {
@@ -15,7 +15,6 @@ const googleCred = {
     },
   },
 };
-
 export interface CustomSession extends Session {
   id: string;
 }
@@ -31,7 +30,7 @@ export const authOptions: NextAuthOptions = {
 
         // console.log("findByEmail");
         if (sessionUser?.id) {
-          console.log(session.user?.email);
+          // console.log(session.user?.email);
           const customSession: CustomSession = {
             ...session,
             id: sessionUser.id,
@@ -54,13 +53,9 @@ export const authOptions: NextAuthOptions = {
         await new UserService().createUser(user);
         return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
     },
   },
 };
-
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };

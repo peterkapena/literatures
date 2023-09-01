@@ -24,7 +24,6 @@ const NewOrder = () => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm<FormSchemaType>({
@@ -35,7 +34,7 @@ const NewOrder = () => {
     const result = await createOrder(data, (session as any)?.id);
 
     if (!result) {
-      console.log("Something went wrong");
+      // console.log("Something went wrong");
       return;
     }
     setShowSubmitButton(false);

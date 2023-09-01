@@ -49,7 +49,7 @@ export async function edit(
   id: string | undefined
 ): Promise<Boolean> {
   const result = FormSchema.safeParse(data);
-  console.log(data);
+  // console.log(data);
 
   if (result.success && id) {
     try {

@@ -30,7 +30,7 @@ export default class OrderService {
   }
 
   async edit(input: OrderClass, id: string): Promise<Boolean> {
-    console.log(id);
+    // console.log(id);
     const rtn = await OrderModel.updateOne(
       { _id: id },
       {

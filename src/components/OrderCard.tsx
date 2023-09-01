@@ -16,15 +16,27 @@ type OrderCardProps = {
 export default function OrderCard({ order, onDelete, onEdit }: OrderCardProps) {
   return (
     <Card variant="plain">
-      <div>
-        <Typography level="title-lg">{order.literature}</Typography>
+      <Box sx={{ width: "100%" }}>
+        <Typography
+          level="title-lg"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: "4",
+            WebkitBoxOrient: "vertical",
+          }}
+        >
+          {order.literature}
+        </Typography>
         <Typography level="body-sm">
           {order.when_created &&
             new Date(order.when_created?.toString()).toLocaleString()}
         </Typography>
-      </div>
+      </Box>
+
       <CardContent>
-        <Box sx={{ height: "150px" }}>
+        <Box sx={{ height: "150px", width: "100%" }}>
           <Typography
             level="body-md"
             sx={{

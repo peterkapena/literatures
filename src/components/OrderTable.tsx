@@ -1,12 +1,7 @@
 import List from "@mui/joy/List";
-import ListDivider from "@mui/joy/ListDivider";
-import ListItem from "@mui/joy/ListItem";
-import ListItemContent from "@mui/joy/ListItemContent";
-import ListItemButton from "@mui/joy/ListItemButton";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import { DateRangeOutlined, Delete, Edit } from "@mui/icons-material";
-import { Box, Chip, Grid, IconButton } from "@mui/joy";
+import { Box, Grid } from "@mui/joy";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { OrderClass } from "@/models/schema/Order";
@@ -52,7 +47,7 @@ export default function ExampleIOSList() {
           }}
           onClose={() => {
             setOrderIdToDelete("");
-            console.log("close");
+            // console.log("close");
           }}
           message="Are you sure you want to delete?"
         ></AlertDialogModal>
