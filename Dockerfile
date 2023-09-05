@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM arm64v8/node:alpine
 
 # Create app directory
 WORKDIR /app
@@ -10,7 +10,7 @@ COPY package*.json ./
 RUN npm install
 
 # Install 'forever' globally
-RUN npm install forever -g
+# RUN npm install forever -g
 
 # If you are building your code for production
 RUN npm ci --only=production
@@ -23,7 +23,8 @@ ENV NODE_ENV production
 
 # Build the Next.js app for production
 RUN npm run build
-
+RUN apk add nano
+RUN touch .env.production
 # Expose the port your app will run on
 EXPOSE 3000
 
