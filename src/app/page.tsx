@@ -28,4 +28,4 @@ const Page = () => {
   );
 };
 
-export default with_auth(Page);
+export default Page;
