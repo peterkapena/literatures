@@ -1,10 +1,9 @@
 // import { UserClass, UserModel } from "@/models/schema/User";
 // import { connectToDB } from "@/service/mongo";
-// import UserService from "@/service/user.service";
-import { UserModel } from "@/models/schema/User";
 import { mongoose } from "@typegoose/typegoose";
 import { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { use } from "react";
 
 export interface CustomSession extends Session {
   id: string;
@@ -43,16 +42,10 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  callbacks: {
-    async signIn({}) {
-      return true;
-    },
-
-    async session({ session, token, user }) {
-      return session;
-    },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      return token;
-    },
+  pages: {
+    signIn: "/auth/signin",
+    signOut: "/auth/signout",
+    error: "/auth/error", // Error code passed in query string as ?error=
+    verifyRequest: "/auth/verify-request", // (used for check email message)
   },
 };

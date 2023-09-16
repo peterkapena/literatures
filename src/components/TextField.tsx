@@ -24,16 +24,17 @@ export default function ({
   const valueAsNumber = type === "number";
 
   return (
-    <FormControl>
+    <FormControl sx={{ my: 1 }}>
       <FormLabel>{label}</FormLabel>
       <Input
         {...register(fieldName, { valueAsNumber })}
         error={Boolean(fieldError?.message)}
         {...rest}
+        type={type}
       />
       {fieldError?.message && (
-        <FormHelperText>
-          <InfoOutlined />
+        <FormHelperText sx={{ color: "red" }}>
+          <InfoOutlined color="error" />
           {fieldError.message}
         </FormHelperText>
       )}
