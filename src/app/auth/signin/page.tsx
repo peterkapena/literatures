@@ -11,7 +11,8 @@ import { IS_DEVELOPER } from "@/common";
 import TextField from "@/components/TextField";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Password from "@/components/Password";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function Page() {
   const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -30,7 +31,25 @@ export default function Page() {
     },
   });
 
-  const processForm: SubmitHandler<FormSchemaType> = async (data) => {};
+  const processForm: SubmitHandler<FormSchemaType> = async (data) => {
+    try {
+      const result = await signIn("credentials", {
+        email_or_username: data.email_or_username,
+        password: data.password,
+        redirect: false,
+        callbackUrl: "/",
+      });
+      console.log(result);
+      if (result?.error) {
+        setShowSubmitButton(false);
+        setMessages(["Invalid email or username or password"]);
+      } else {
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Sheet
@@ -95,7 +114,7 @@ export default function Page() {
             Sign in
           </Button>
         )}
-        {!showSubmitButton && messages.length === 0 && (
+        {!showSubmitButton && messages.length > 0 && (
           <Box
             sx={{
               display: "flex",

@@ -1,5 +1,9 @@
 // import { UserClass, UserModel } from "@/models/schema/User";
 // import { connectToDB } from "@/service/mongo";
+import { User, UserModel } from "@/models/schema/User";
+import { connectToDB } from "@/service/mongo";
+import { UserService } from "@peterkapena/user_auth";
+import { DuplicateCheck } from "@peterkapena/user_auth/src/services/UserService";
 import { mongoose } from "@typegoose/typegoose";
 import { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -18,21 +22,30 @@ export const authOptions: NextAuthOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: {
+        email_or_username: {
           label: "Username",
           type: "text",
-          placeholder: "jsmith",
-          required: "",
         },
         password: { label: "Password", type: "password" },
-        email: { label: "Email", type: "email", placeholder: "" },
       },
       async authorize(credentials, req) {
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+        // let a = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+        await connectToDB();
+        const signedin = await new UserService(
+          UserModel,
+          DuplicateCheck.EMAIL
+        ).simple_signIn(
+          credentials?.email_or_username || "",
+          credentials?.password || ""
+        );
 
-        if (user) {
+        if (signedin?._id) {
           // Any object returned will be saved in `user` property of the JWT
-          return null;
+          return {
+            id: signedin._id.toString(),
+            email: signedin.email || signedin.username,
+            name: signedin.username,
+          };
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null;

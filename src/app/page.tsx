@@ -2,7 +2,6 @@
 import * as React from "react";
 import NextLink from "next/link";
 import { Box, Button } from "@mui/joy";
-import with_auth from "./with_auth";
 import OrderTable from "@/components/OrderTable";
 
 const Page = () => {
