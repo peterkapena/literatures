@@ -8,7 +8,6 @@ import { FormSchema, FormSchemaType, ValidationResult } from "./form-schema";
 import { createOrder } from "./_actions";
 import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
-import with_auth from "@/app/with_auth";
 import { useSession } from "next-auth/react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { ArrowBack } from "@mui/icons-material";
@@ -172,4 +171,4 @@ const NewOrder = () => {
   );
 };
 
-export default with_auth(NewOrder);
+export default NewOrder;

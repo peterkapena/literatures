@@ -6,7 +6,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
-import with_auth, { WithAuthProps } from "@/app/with_auth";
 import { useSession } from "next-auth/react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -16,7 +15,7 @@ import { ArrowBack, DateRangeOutlined, Save } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { FormSchemaType, FormSchema } from "../../create/form-schema";
 
-const NewOrder: React.FC<WithAuthProps> = ({ params: id }) => {
+const NewOrder = ({ params }: { params: { id: string } }) => {
   const [result, setResult] = useState<Boolean>();
   const { data: session } = useSession();
   const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -24,7 +23,7 @@ const NewOrder: React.FC<WithAuthProps> = ({ params: id }) => {
   const router = useRouter();
 
   useEffect(() => {
-    getOrder(id.id).then((strOrder) => {
+    getOrder(params.id).then((strOrder) => {
       const _order: OrderClass = JSON.parse(strOrder);
       setOrder(_order);
     });
@@ -212,4 +211,4 @@ const NewOrder: React.FC<WithAuthProps> = ({ params: id }) => {
   );
 };
 
-export default with_auth(NewOrder);
+export default NewOrder;
