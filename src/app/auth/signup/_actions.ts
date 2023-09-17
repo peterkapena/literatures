@@ -12,15 +12,15 @@ export async function signUp(
   try {
     if (await connectToDB()) {
     }
-    const result = await new UserService(
-      UserModel,
+    const result = await new UserService(UserModel).signUp(
+      {
+        email,
+        password,
+        roles: [],
+        username,
+      },
       DuplicateCheck.BOTH_USERNAME_EMAIL
-    ).signUp({
-      email,
-      password,
-      roles: [],
-      username,
-    });
+    );
     return result;
   } catch (error) {
     console.error(error);

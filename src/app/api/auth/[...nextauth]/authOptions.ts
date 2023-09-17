@@ -1,7 +1,6 @@
 import { UserModel } from "@/models/schema/User";
 import { connectToDB } from "@/service/mongo";
 import { UserService } from "@peterkapena/user_auth";
-import { DuplicateCheck } from "@peterkapena/user_auth/src/services/UserService";
 import { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -27,10 +26,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         // let a = { id: "1", name: "J Smith", email: "jsmith@example.com" };
         await connectToDB();
-        const signedin = await new UserService(
-          UserModel,
-          DuplicateCheck.EMAIL
-        ).simple_signIn(
+        const signedin = await new UserService(UserModel).simple_signIn(
           credentials?.email_or_username || "",
           credentials?.password || ""
         );
