@@ -27,15 +27,22 @@ RUN apk add nano
 RUN touch .env.production
 # Expose the port your app will run on
 EXPOSE 3000
+EXPOSE 443
 
 # Use 'forever' to run your Next.js app with the specified options
 CMD ["npm", "start", "--", "-p", "3000"]
 
+#                           docker build -t literatures .
+#                           docker run -dp 3000:3000 literatures
+#                           docker tag literatures  kapenapeter/literatures
+#                           docker push kapenapeter/literatures
 
-#                           docker build -t grower_management .
-#                           docker run -dp 4000:4000 grower_management (optional)
-#                           docker tag grower_management  kapenapeter/grower_management
-#                           docker push kapenapeter/grower_management
-
-#                           sudo docker pull kapenapeter/grower_management
-#                           sudo docker run -dp 4000:4000 kapenapeter/grower_management   
+#                           sudo docker pull kapenapeter/literatures
+#                           sudo docker container rm literatures -f
+#                           sudo docker rmi kapenapeter/literatures
+#                           sudo docker pull kapenapeter/literatures
+#                           sudo docker run -d --name literatures --network peterkapena kapenapeter/literatures
+#                           sudo docker container rm -f literatures
+#                           sudo docker container restart literatures
+#create a user
+#check if the server's ip address is in the allowed list in the atlas mongo db

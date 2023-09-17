@@ -11,7 +11,7 @@ import { IS_DEVELOPER } from "@/common";
 import TextField from "@/components/TextField";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Password from "@/components/Password";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 export default function Page() {

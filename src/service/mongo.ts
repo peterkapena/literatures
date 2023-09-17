@@ -1,4 +1,4 @@
-import mongoose, { models, mongo } from "mongoose";
+import mongoose from "mongoose";
 
 export async function connectToDB(): Promise<boolean> {
   try {

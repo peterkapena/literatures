@@ -1,13 +1,9 @@
-// import { UserClass, UserModel } from "@/models/schema/User";
-// import { connectToDB } from "@/service/mongo";
-import { User, UserModel } from "@/models/schema/User";
+import { UserModel } from "@/models/schema/User";
 import { connectToDB } from "@/service/mongo";
 import { UserService } from "@peterkapena/user_auth";
 import { DuplicateCheck } from "@peterkapena/user_auth/src/services/UserService";
-import { mongoose } from "@typegoose/typegoose";
 import { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { use } from "react";
 
 export interface CustomSession extends Session {
   id: string;
@@ -28,7 +24,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         // let a = { id: "1", name: "J Smith", email: "jsmith@example.com" };
         await connectToDB();
         const signedin = await new UserService(
