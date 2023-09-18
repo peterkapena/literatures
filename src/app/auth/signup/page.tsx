@@ -3,7 +3,7 @@ import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import ColorSchemeToggle from "@/components/ColorSchemeToggle";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Sheet, Typography, Alert, IconButton } from "@mui/joy";
+import { Sheet, Typography, Alert, IconButton, CircularProgress } from "@mui/joy";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { FormSchema, FormSchemaType } from "./form-schema";
@@ -14,11 +14,13 @@ import Email from "@/components/Email";
 import Password from "@/components/Password";
 import { Info } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { SubmitLoadingButton } from "@/components/SubmitLoadingButton";
 
 export default function Page() {
   const [showSubmitButton, setShowSubmitButton] = useState(true);
   const [messages, setMessages] = useState<string[]>([]);
   const { push } = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -35,6 +37,7 @@ export default function Page() {
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
     try {
+      setIsLoading(true);
       const ok = await signUp(data.username, data.email, data.password);
       console.log(ok);
 
@@ -47,7 +50,10 @@ export default function Page() {
       } else {
         setMessages([...messages, "Sign up failed. Contact support."]);
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    };
   };
 
   return (
@@ -113,10 +119,9 @@ export default function Page() {
           </Button>
         </Box>
         {showSubmitButton && (
-          <Button fullWidth type="submit" sx={{ mt: 1 /* margin top */ }}>
-            Sign up
-          </Button>
+          SubmitLoadingButton(isLoading, "Sign up")
         )}
+
         {!showSubmitButton && messages.length > 0 && (
           <Box
             sx={{

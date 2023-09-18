@@ -3,7 +3,12 @@ import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import ColorSchemeToggle from "@/components/ColorSchemeToggle";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Sheet, Typography, Alert, IconButton } from "@mui/joy";
+import {
+  Sheet,
+  Typography,
+  Alert,
+  IconButton,
+} from "@mui/joy";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { FormSchema, FormSchemaType } from "./form-schema";
@@ -13,11 +18,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Password from "@/components/Password";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { SubmitLoadingButton } from "../../../components/SubmitLoadingButton";
 
 export default function Page() {
   const [showSubmitButton, setShowSubmitButton] = useState(true);
   const [messages, setMessages] = useState<string[]>([]);
   const { push } = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -33,6 +40,8 @@ export default function Page() {
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
     try {
+      setIsLoading(true);
+
       const result = await signIn("credentials", {
         email_or_username: data.email_or_username,
         password: data.password,
@@ -48,6 +57,8 @@ export default function Page() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -110,10 +121,9 @@ export default function Page() {
           </Button>
         </Box>
         {showSubmitButton && (
-          <Button fullWidth type="submit" sx={{ mt: 1 /* margin top */ }}>
-            Sign in
-          </Button>
+          SubmitLoadingButton(isLoading, "Sign in")
         )}
+
         {!showSubmitButton && messages.length > 0 && (
           <Box
             sx={{
@@ -156,3 +166,4 @@ export default function Page() {
     </Sheet>
   );
 }
+
