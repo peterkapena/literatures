@@ -9,7 +9,7 @@ export const FormSchema = z.object({
   email_or_username: z
     .string({})
     .nonempty("this is required")
-    .email("Invalid email")
+    //.email("Invalid email")
     .max(100, "This must be less than 100 characters long"),
 });
 export type FormSchemaType = z.infer<typeof FormSchema>;

@@ -3,22 +3,17 @@ import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import ColorSchemeToggle from "@/components/ColorSchemeToggle";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Sheet,
-  Typography,
-  Alert,
-  IconButton,
-} from "@mui/joy";
+import { Sheet, Typography } from "@mui/joy";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { FormSchema, FormSchemaType } from "./form-schema";
 import { IS_DEVELOPER } from "@/common";
 import TextField from "@/components/TextField";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Password from "@/components/Password";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { SubmitLoadingButton } from "../../../components/SubmitLoadingButton";
+import { Notice } from "../../../components/Notice";
 
 export default function Page() {
   const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -51,7 +46,8 @@ export default function Page() {
       console.log(result);
       if (result?.error) {
         setShowSubmitButton(false);
-        setMessages(["Invalid email or username or password"]);
+        setMessages(["Incorrect username or password"]);
+        
       } else {
         window.location.href = "/";
       }
@@ -120,50 +116,14 @@ export default function Page() {
             Do not have an account? Click here to create one.
           </Button>
         </Box>
-        {showSubmitButton && (
-          SubmitLoadingButton(isLoading, "Sign in")
-        )}
+        {showSubmitButton && SubmitLoadingButton(isLoading, "Sign in")}
 
-        {!showSubmitButton && messages.length > 0 && (
-          <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              width: "100%",
-              flexDirection: "column",
-              mt: 3,
-            }}
-          >
-            <Alert
-              key={"Success"}
-              sx={{ alignItems: "flex-start" }}
-              startDecorator={<CheckCircleIcon />}
-              variant="soft"
-              color={"success"}
-              endDecorator={
-                <Box sx={{ display: { xs: "inline-grid", sm: "flex" } }}>
-                  <IconButton
-                    variant="solid"
-                    color={"success"}
-                    sx={{ m: 2, mb: 0, px: 1, pb: 0.5 }}
-                    onClick={() => setShowSubmitButton(true)}
-                  >
-                    X
-                  </IconButton>
-                </Box>
-              }
-            >
-              <div>
-                <div>{"Success"}</div>
-                <Typography level="body-sm" color={"success"}>
-                  {messages.join("\n")}
-                </Typography>
-              </div>
-            </Alert>
-          </Box>
+        {!showSubmitButton && messages.length > 0 &&(
+          <Notice setShowSubmitButton={setShowSubmitButton} messages={messages} />
         )}
       </form>
     </Sheet>
   );
 }
+
 

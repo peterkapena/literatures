@@ -15,6 +15,7 @@ import Password from "@/components/Password";
 import { Info } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { SubmitLoadingButton } from "@/components/SubmitLoadingButton";
+import { Notice } from "../../../components/Notice";
 
 export default function Page() {
   const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -38,13 +39,14 @@ export default function Page() {
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       setIsLoading(true);
+
       const ok = await signUp(data.username, data.email, data.password);
       console.log(ok);
 
       setShowSubmitButton(false);
+
       if (ok) {
-        setMessages([
-          ...messages,
+        setMessages([...messages,
           "Sign up was successful. Close this to sign in or login now.",
         ]);
       } else {
@@ -118,50 +120,16 @@ export default function Page() {
             Already have an account? Sign in now!
           </Button>
         </Box>
+
         {showSubmitButton && (
           SubmitLoadingButton(isLoading, "Sign up")
         )}
 
-        {!showSubmitButton && messages.length > 0 && (
-          <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              width: "100%",
-              flexDirection: "column",
-              mt: 3,
-            }}
-          >
-            <Alert
-              key={"Success"}
-              sx={{ alignItems: "flex-start" }}
-              startDecorator={<Info />}
-              variant="soft"
-              color={"neutral"}
-              endDecorator={
-                <Box sx={{ display: { xs: "inline-grid", sm: "flex" } }}>
-                  <IconButton
-                    variant="solid"
-                    color={"neutral"}
-                    sx={{ m: 2, mb: 0, px: 1, pb: 0.5 }}
-                    onClick={() => {
-                      setMessages([]);
-                      setShowSubmitButton(true);
-                    }}
-                  >
-                    X
-                  </IconButton>
-                </Box>
-              }
-            >
-              <div>
-                <div>{"Success"}</div>
-                <Typography level="body-sm" color={"neutral"}>
-                  {messages.join("\n")}
-                </Typography>
-              </div>
-            </Alert>
-          </Box>
+        {!showSubmitButton && messages.length > 0 &&(
+          <Notice onClose={()=> {
+            setShowSubmitButton(true);
+            setMessages([]);
+          }} messages={messages} />
         )}
       </form>
     </Sheet>
