@@ -3,13 +3,7 @@ import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import ColorSchemeToggle from "@/components/ColorSchemeToggle";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Sheet,
-  Typography,
-  Alert,
-  IconButton,
-  CircularProgress,
-} from "@mui/joy";
+import { Sheet, Typography } from "@mui/joy";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { FormSchema, FormSchemaType } from "./form-schema";
@@ -132,7 +126,12 @@ export default function Page() {
           </Button>
         </Box>
 
-        {showSubmitButton && SubmitLoadingButton(isLoading, "Sign up")}
+        {showSubmitButton && (
+          <SubmitLoadingButton
+            isLoading={isLoading}
+            title="Sign up "
+          ></SubmitLoadingButton>
+        )}
 
         {!showSubmitButton && messages.length > 0 && (
           <Notice

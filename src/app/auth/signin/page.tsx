@@ -20,6 +20,7 @@ export default function Page() {
   const [messages, setMessages] = useState<string[]>([]);
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>();
 
   const {
     register,
@@ -47,10 +48,10 @@ export default function Page() {
       if (result?.error) {
         setShowSubmitButton(false);
         setMessages(["Incorrect username or password"]);
-        
       } else {
         window.location.href = "/";
       }
+      setIsSuccess(Boolean(!result?.error));
     } catch (error) {
       console.error(error);
     } finally {
@@ -116,14 +117,24 @@ export default function Page() {
             Do not have an account? Click here to create one.
           </Button>
         </Box>
-        {showSubmitButton && SubmitLoadingButton(isLoading, "Sign in")}
+        {showSubmitButton && (
+          <SubmitLoadingButton
+            isLoading={isLoading}
+            title="Sign in"
+          ></SubmitLoadingButton>
+        )}
 
-        {!showSubmitButton && messages.length > 0 &&(
-          <Notice setShowSubmitButton={setShowSubmitButton} messages={messages} />
+        {!showSubmitButton && messages.length > 0 && (
+          <Notice
+            isSuccess={isSuccess}
+            onClose={() => {
+              setShowSubmitButton(true);
+              setMessages([]);
+            }}
+            messages={messages}
+          />
         )}
       </form>
     </Sheet>
   );
 }
-
-
