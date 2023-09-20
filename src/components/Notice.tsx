@@ -2,18 +2,14 @@
 import Box from "@mui/joy/Box";
 import { Typography, Alert, IconButton } from "@mui/joy";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { CloseOutlined } from "@mui/icons-material";
 
 type NoticeProps = {
   onClose: () => void;
   messages: string[];
-  isSuccess?: boolean;
-
+  isSuccess?: boolean | undefined;
 };
-export function Notice({
-  onClose,
-  messages,
-  isSuccess = false,
-}: NoticeProps) {
+export function Notice({ onClose, messages, isSuccess = false }: NoticeProps) {
   const alertColor = isSuccess ? "success" : "danger"; // Determine the alert color based on success
 
   return (
@@ -34,24 +30,23 @@ export function Notice({
         color={alertColor}
         endDecorator={
           <Box sx={{ display: { xs: "inline-grid", sm: "flex" } }}>
-            {isSuccess ? null : (
+            {
               <IconButton
                 variant="solid"
                 color={alertColor}
                 sx={{ m: 2, mb: 0, px: 1, pb: 0.5 }}
                 onClick={() => onClose()}
               >
-                X
+                <CloseOutlined />
               </IconButton>
-            )}
+            }
           </Box>
         }
       >
         <div>
           <div>{isSuccess ? "Success" : "Failed"}</div>
           <Typography level="body-sm" color={alertColor}>
-            {messages ? messages.join("\n") : ""}{" "}
-            {/* Check if messages is defined */}
+            {messages ? messages.join("\n") : ""}
           </Typography>
         </div>
       </Alert>

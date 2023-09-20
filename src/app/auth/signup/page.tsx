@@ -3,7 +3,13 @@ import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import ColorSchemeToggle from "@/components/ColorSchemeToggle";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Sheet, Typography, Alert, IconButton, CircularProgress } from "@mui/joy";
+import {
+  Sheet,
+  Typography,
+  Alert,
+  IconButton,
+  CircularProgress,
+} from "@mui/joy";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { FormSchema, FormSchemaType } from "./form-schema";
@@ -12,7 +18,6 @@ import { signUp } from "./_actions";
 import UserName from "@/components/UserName";
 import Email from "@/components/Email";
 import Password from "@/components/Password";
-import { Info } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { SubmitLoadingButton } from "@/components/SubmitLoadingButton";
 import { Notice } from "../../../components/Notice";
@@ -22,6 +27,7 @@ export default function Page() {
   const [messages, setMessages] = useState<string[]>([]);
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>();
 
   const {
     register,
@@ -46,16 +52,21 @@ export default function Page() {
       setShowSubmitButton(false);
 
       if (ok) {
-        setMessages([...messages,
+        setMessages([
+          ...messages,
           "Sign up was successful. Close this to sign in or login now.",
         ]);
       } else {
-        setMessages([...messages, "Sign up failed. Contact support."]);
+        setMessages([
+          ...messages,
+          "Sign up failed. Try using different credentials. Otherwise, please contact support.",
+        ]);
       }
+      setIsSuccess(Boolean(ok));
     } catch (error) {
     } finally {
       setIsLoading(false);
-    };
+    }
   };
 
   return (
@@ -121,15 +132,17 @@ export default function Page() {
           </Button>
         </Box>
 
-        {showSubmitButton && (
-          SubmitLoadingButton(isLoading, "Sign up")
-        )}
+        {showSubmitButton && SubmitLoadingButton(isLoading, "Sign up")}
 
-        {!showSubmitButton && messages.length > 0 &&(
-          <Notice onClose={()=> {
-            setShowSubmitButton(true);
-            setMessages([]);
-          }} messages={messages} />
+        {!showSubmitButton && messages.length > 0 && (
+          <Notice
+            isSuccess={isSuccess}
+            onClose={() => {
+              setShowSubmitButton(true);
+              setMessages([]);
+            }}
+            messages={messages}
+          />
         )}
       </form>
     </Sheet>
