@@ -18,8 +18,7 @@
 ---
 
 <h2>Prerequisites</h2>
-
-  <li><strong>Node.js</strong>: Ensure you have the latest version of Node.js installed on your machine. You can download it from <a href="https://nodejs.org/">Node.js official website</a>.</li>
+  <li><strong>Node.js</strong>: Ensure you have the latest version of Node.js installed on your machine. It's important to have the latest version to ensure compatibility with this project. You can download it from <a href="https://nodejs.org/">Node.js official website</a>.</li>
   <li><strong>MongoDB</strong>: This project uses MongoDB for data storage. Ensure you have MongoDB installed and running locally. If not, you can follow the installation guide on the <a href="https://docs.mongodb.com/manual/installation/">MongoDB official documentation</a>.</li>
 
 <h2>Getting Started</h2>
