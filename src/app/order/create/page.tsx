@@ -33,7 +33,6 @@ const NewOrder = () => {
     const result = await createOrder(data, (session as any)?.id);
 
     if (!result) {
-      // console.log("Something went wrong");
       return;
     }
     setShowSubmitButton(false);

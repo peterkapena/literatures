@@ -40,7 +40,7 @@ export default function Page() {
     try {
       setIsLoading(true);
 
-      const ok = await signUp(data.username, data.email, data.password);
+      const ok = await signUp(data);
       console.log(ok);
 
       setShowSubmitButton(false);

@@ -44,7 +44,7 @@ export default function Page() {
         redirect: false,
         callbackUrl: "/",
       });
-      console.log(result);
+      // console.log(result);
       if (result?.error) {
         setShowSubmitButton(false);
         setMessages(["Incorrect username or password"]);
