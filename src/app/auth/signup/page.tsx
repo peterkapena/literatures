@@ -23,25 +23,21 @@ export default function Page() {
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState<boolean>();
-  
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
+    reset,
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: IS_DEVELOPER ? "peterkapenapeter@gmail.com" : "",
       password: IS_DEVELOPER ? "0FROEFNSUlCQ2dLQ0FRRUFrUG5wTDJ" : "",
       username: IS_DEVELOPER ? "peterkapena" : "",
+      confirm_password: IS_DEVELOPER ? "0FROEFNSUlCQ2dLQ0FRRUFrUG5wTDJ" : "",
     },
   });
-
-  const validatePasswordMatch = (value: string) => {
-    const password = watch("password");
-    return value === password || "Passwords do not match";
-  };
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
     try {
@@ -69,17 +65,14 @@ export default function Page() {
       setIsLoading(false);
     }
   };
-  const onSubmit = () => {
-    handleSubmit(processForm)();
-  };
 
   return (
     <Sheet
       sx={{
         mt: 2,
         width: 500,
-        mx: "auto", 
-        p: 2, 
+        mx: "auto",
+        p: 2,
         display: "flex",
         flexDirection: "column",
         gap: 2,
@@ -113,16 +106,16 @@ export default function Page() {
           error={errors.email}
           register={register}
         ></Email>
-        
+
         <Password
           showSubmitButton={showSubmitButton}
           error={errors.password}
           register={register}
         ></Password>
         <ConfirmPassword
-        showSubmitButton={showSubmitButton}
-        error={errors.password}
-        register={register}
+          showSubmitButton={showSubmitButton}
+          error={errors.confirm_password}
+          register={register}
         ></ConfirmPassword>
 
         <Box
@@ -145,7 +138,6 @@ export default function Page() {
           <SubmitLoadingButton
             isLoading={isLoading}
             title="Sign up "
-            onClick={onSubmit}
           ></SubmitLoadingButton>
         )}
 
@@ -155,6 +147,8 @@ export default function Page() {
             onClose={() => {
               setShowSubmitButton(true);
               setMessages([]);
+              reset();
+              push("/auth/signin");
             }}
             messages={messages}
           />
@@ -162,5 +156,4 @@ export default function Page() {
       </form>
     </Sheet>
   );
-
 }

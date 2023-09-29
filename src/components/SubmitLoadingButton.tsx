@@ -9,6 +9,7 @@ type SubmitLoadingButtonProps = {
 
 export function SubmitLoadingButton(props: SubmitLoadingButtonProps) {
   const { isLoading, title } = props;
+
   return (
     <Button
       disabled={isLoading}

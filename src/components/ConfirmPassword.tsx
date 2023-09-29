@@ -15,8 +15,7 @@ const ConfirmPassword = ({
     <TextField
       disabled={Boolean(!showSubmitButton)}
       label={"Confirm Password"}
-      fieldName="confirm password"
-      placeholder="confirm password"
+      fieldName="confirm_password"
       register={register}
       fieldError={error}
       type="password"

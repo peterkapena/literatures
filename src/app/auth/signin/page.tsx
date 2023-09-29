@@ -44,11 +44,11 @@ export default function Page() {
         redirect: false,
         callbackUrl: "/",
       });
-      // console.log(result);
+
       if (result?.error) {
-        setShowSubmitButton(false);
         setMessages(["Incorrect username or password"]);
       } else {
+        setShowSubmitButton(false);
         window.location.href = "/";
       }
       setIsSuccess(Boolean(!result?.error));
