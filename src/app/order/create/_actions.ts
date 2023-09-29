@@ -1,7 +1,6 @@
 "use server";
 import OrderService from "@/service/order.service";
 import { FormSchemaType, FormSchema, ValidationResult } from "./form-schema";
-// import { authService } from "auth";
 
 export async function createOrder(
   data: FormSchemaType,
@@ -50,7 +49,6 @@ export async function edit(
   id: string | undefined
 ): Promise<Boolean> {
   const result = FormSchema.safeParse(data);
-  // console.log(data);
 
   if (result.success && id) {
     try {
