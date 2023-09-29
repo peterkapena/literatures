@@ -1,20 +1,20 @@
 import * as React from "react";
 import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
-import CardActions from "@mui/joy/CardActions";
 import Typography from "@mui/joy/Typography";
 import { OrderClass } from "@/models/schema/Order";
-import { Delete, Info } from "@mui/icons-material";
+
+
 
 type OrderCardProps = {
   order: OrderClass;
   onDelete: () => void;
   onEdit: () => void;
 };
-export default function OrderCard({ order, onDelete, onEdit }: OrderCardProps) {
+export default function OrderCard({ order}: OrderCardProps) {
   return (
+    
     <Card variant="plain">
       <Box sx={{ width: "100%" }}>
         <Typography
@@ -36,7 +36,7 @@ export default function OrderCard({ order, onDelete, onEdit }: OrderCardProps) {
       </Box>
 
       <CardContent>
-        <Box sx={{ height: "150px", width: "100%" }}>
+        <Box sx={{ height: "100px", width: "100%" }}>
           <Typography
             level="body-md"
             sx={{
@@ -57,27 +57,6 @@ export default function OrderCard({ order, onDelete, onEdit }: OrderCardProps) {
           </Box>
         </Box>
       </CardContent>
-      <CardActions
-        buttonFlex="0 1 120px"
-        sx={{ display: "flex", justifyContent: "space-between" }}
-      >
-        <Button
-          onClick={onDelete}
-          variant="outlined"
-          color="danger"
-          size="sm"
-          startDecorator={<Delete color="action" />}
-        ></Button>
-        <Button
-          onClick={onEdit}
-          variant="solid"
-          size="sm"
-          color="success"
-          startDecorator={<Info />}
-        >
-          Edit
-        </Button>
-      </CardActions>
     </Card>
   );
 }
