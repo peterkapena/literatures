@@ -12,6 +12,7 @@ import { signUp } from "./_actions";
 import UserName from "@/components/UserName";
 import Email from "@/components/Email";
 import Password from "@/components/Password";
+import ConfirmPassword from "@/components/ConfirmPassword";
 import { useRouter } from "next/navigation";
 import { SubmitLoadingButton } from "@/components/SubmitLoadingButton";
 import { Notice } from "../../../components/Notice";
@@ -22,11 +23,12 @@ export default function Page() {
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState<boolean>();
-
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,6 +37,11 @@ export default function Page() {
       username: IS_DEVELOPER ? "peterkapena" : "",
     },
   });
+
+  const validatePasswordMatch = (value: string) => {
+    const password = watch("password");
+    return value === password || "Passwords do not match";
+  };
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
     try {
@@ -62,14 +69,17 @@ export default function Page() {
       setIsLoading(false);
     }
   };
+  const onSubmit = () => {
+    handleSubmit(processForm)();
+  };
 
   return (
     <Sheet
       sx={{
         mt: 2,
         width: 500,
-        mx: "auto", // margin left & right
-        p: 2, // padding left & right
+        mx: "auto", 
+        p: 2, 
         display: "flex",
         flexDirection: "column",
         gap: 2,
@@ -103,11 +113,17 @@ export default function Page() {
           error={errors.email}
           register={register}
         ></Email>
+        
         <Password
           showSubmitButton={showSubmitButton}
           error={errors.password}
           register={register}
         ></Password>
+        <ConfirmPassword
+        showSubmitButton={showSubmitButton}
+        error={errors.password}
+        register={register}
+        ></ConfirmPassword>
 
         <Box
           sx={{
@@ -125,11 +141,11 @@ export default function Page() {
             Already have an account? Sign in now!
           </Button>
         </Box>
-
         {showSubmitButton && (
           <SubmitLoadingButton
             isLoading={isLoading}
             title="Sign up "
+            onClick={onSubmit}
           ></SubmitLoadingButton>
         )}
 
@@ -146,4 +162,5 @@ export default function Page() {
       </form>
     </Sheet>
   );
+
 }

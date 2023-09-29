@@ -101,7 +101,7 @@ export function SheetTableView(orderIdToDelete: string, fetchOrders: () => Promi
               </Button>
               {index !== data.length - 1 && <Box sx={{ height: "1rem" }} />}
             </Box>
-          ))}
+          ))} 
         </>
       ) : (
         <Box>
