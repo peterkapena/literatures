@@ -31,7 +31,7 @@ export async function getOrders(userId?: string) {
   if (userId) {
     const user = (await UserModel.findById(userId)) as User;
     if (user && user.roles?.includes("admin")) {
-      console.log(user);
+      // console.log(user);
       const rtn = await (await OrderService._()).getOrders();
       return JSON.stringify(rtn);
     } else if (user._id) {
