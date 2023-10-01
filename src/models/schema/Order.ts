@@ -1,7 +1,6 @@
 import { getModelForClass, pre, prop, queryMethod } from "@typegoose/typegoose";
 import { AsQueryMethod, ReturnModelType } from "@typegoose/typegoose/lib/types";
 import { models } from "mongoose";
-import { ReactNode } from "react";
 
 interface OrderClassSchemaQueryHelpers {
   findAllByUser: AsQueryMethod<typeof findAllByUser>;
@@ -28,8 +27,6 @@ export class OrderClass {
   when_created?: String;
   @prop({})
   notes?: String;
-  customerName: ReactNode;
-  orderDate: ReactNode;
 }
 
 export const OrderModel =
