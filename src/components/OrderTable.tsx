@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { OrderClass } from "@/models/schema/Order";
 import { useRouter } from "next/navigation";
@@ -14,14 +13,16 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ExampleIOSList() {
-  const { data: session } = useSession();
+type OrderTableProps = {
+  userId: string;
+};
+export default function OrderTable({ userId }: OrderTableProps) {
   const [data, setData] = useState<OrderClass[]>();
   const { push } = useRouter();
   const [orderIdToDelete, setOrderIdToDelete] = useState("");
 
   async function fetchOrders() {
-    const strOrders = await getOrders((session as any)?.id);
+    const strOrders = await getOrders(userId);
     const orders: OrderClass[] = JSON.parse(strOrders);
     setData(orders);
   }
@@ -30,8 +31,11 @@ export default function ExampleIOSList() {
     fetchOrders();
   }, []);
 
-  return (
-    SheetTableView(orderIdToDelete, fetchOrders, setOrderIdToDelete, data, push)
+  return SheetTableView(
+    orderIdToDelete,
+    fetchOrders,
+    setOrderIdToDelete,
+    data,
+    push
   );
 }
-
