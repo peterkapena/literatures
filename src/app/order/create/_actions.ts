@@ -1,6 +1,7 @@
 "use server";
 import OrderService from "@/service/order.service";
 import { FormSchemaType, FormSchema, ValidationResult } from "./form-schema";
+import { User, UserModel } from "@/models/schema/User";
 
 export async function createOrder(
   data: FormSchemaType,
@@ -28,14 +29,18 @@ export async function createOrder(
 
 export async function getOrders(userId?: string) {
   if (userId) {
-    const rtn = await (await OrderService._()).getOrdersByUser(userId);
-    // console.log(rtn);
-
-    return JSON.stringify(rtn);
-  } else {
-    const rtn = await (await OrderService._()).getOrders();
-    return JSON.stringify(rtn);
+    const user = (await UserModel.findById(userId)) as User;
+    if (user && user.roles?.includes("admin")) {
+      console.log(user);
+      const rtn = await (await OrderService._()).getOrders();
+      return JSON.stringify(rtn);
+    } else if (user._id) {
+      const rtn = await (await OrderService._()).getOrdersByUser(userId);
+      return JSON.stringify(rtn);
+    }
   }
+
+  throw new Error("Invalid user id");
 }
 
 export async function getOrder(id: string) {

@@ -1,4 +1,4 @@
-import { UserModel } from "@/models/schema/User";
+import { User, UserModel } from "@/models/schema/User";
 import { connectToDB } from "@/service/mongo";
 import { UserService } from "@peterkapena/user_auth";
 import { NextAuthOptions, Session } from "next-auth";
@@ -52,5 +52,18 @@ export const authOptions: NextAuthOptions = {
     signOut: "/auth/signout",
     error: "/auth/error", // Error code passed in query string as ?error=
     verifyRequest: "/auth/verify-request", // (used for check email message)
+  },
+  callbacks: {
+    async session({ session, user, token }) {
+      const usr = (await UserModel.findById(token.sub)) as User;
+      user = {
+        ...user,
+        ...session.user,
+        email: usr.email,
+        id: usr._id?.toString() || "",
+      };
+
+      return { ...session, user };
+    },
   },
 };
