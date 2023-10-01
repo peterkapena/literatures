@@ -51,8 +51,9 @@ export default function Page() {
       if (ok) {
         setMessages([
           ...messages,
-          "Sign up was successful. Close this to sign in or login now.",
+          "Sign up was successful. You will be redirected to sign in or or close this to sign in or login now.",
         ]);
+        setTimeout(() => (window.location.href = "/"), 3000);
       } else {
         setMessages([
           ...messages,
@@ -85,11 +86,11 @@ export default function Page() {
         <Box sx={{ mb: 3, display: "flex", justifyContent: "space-between" }}>
           <div>
             <Typography level="h2" component="h1" sx={{ mb: 2 }}>
-              <b>Welcome!</b>
+              <b>Register or Sign up!</b>
             </Typography>
             <Typography level="body-md">
               Sign up or register your account so to start making literatures'
-              order.
+              order or generate field service partners.
             </Typography>
           </div>
           <div>

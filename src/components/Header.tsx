@@ -68,13 +68,13 @@ export default function Header() {
               </Button>
             </Box>
           </Box>
+          <ColorSchemeToggle />
         </>
       ) : (
         <>
           <Typography>{APP_NAME}</Typography>
         </>
       )}
-      <ColorSchemeToggle id={undefined} />
     </Sheet>
   );
 }

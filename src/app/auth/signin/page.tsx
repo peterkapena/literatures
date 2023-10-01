@@ -44,13 +44,13 @@ export default function Page() {
         redirect: false,
         callbackUrl: "/",
       });
-
       if (result?.error) {
         setMessages(["Incorrect username or password"]);
       } else {
-        setShowSubmitButton(false);
         window.location.href = "/";
       }
+
+      setShowSubmitButton(false);
       setIsSuccess(Boolean(!result?.error));
     } catch (error) {
       console.error(error);
@@ -78,7 +78,7 @@ export default function Page() {
         <Box sx={{ mb: 3, display: "flex", justifyContent: "space-between" }}>
           <div>
             <Typography level="h2" component="h1" sx={{ mb: 2 }}>
-              <b>Welcome!</b>
+              <b>Sign in!</b>
             </Typography>
             <Typography level="body-md">Sign in to continue.</Typography>
           </div>
