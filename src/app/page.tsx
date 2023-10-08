@@ -20,12 +20,22 @@ const Page = () => {
         },
       })}
     >
-      <Box sx={{ mb: 5, display: "flex" }}>
-        <NextLink href="/order/create">
-          <Button fullWidth size="md" color="warning">
-            Make an order
-          </Button>
-        </NextLink>
+      <Box sx={{ mb: 2, display: "flex" }}>
+        <Box sx={{ m: 1 }}>
+          <NextLink href="/order/create">
+            <Button fullWidth size="md" color="warning">
+              Make an order
+            </Button>
+          </NextLink>
+        </Box>
+
+        <Box sx={{ m: 1 }}>
+          <NextLink href="/partner/generate">
+            <Button fullWidth size="md" color="warning">
+              Generate field service partners
+            </Button>
+          </NextLink>
+        </Box>
       </Box>
       <OrderTable userId={(session?.user as any)?.id}></OrderTable>
     </Box>
