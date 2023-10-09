@@ -1,253 +1,287 @@
 "use client";
 import {
-  Alert,
+  Accordion,
+  AccordionDetails,
+  AccordionGroup,
+  AccordionSummary,
   Box,
   Button,
-  Grid,
-  IconButton,
+  Chip,
+  Divider,
+  FormControl,
+  FormLabel,
   ListDivider,
+  ListItemContent,
   ListItemDecorator,
+  Select,
+  Table,
   Typography,
 } from "@mui/joy";
 import React, { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import TextField from "@/components/TextField";
-import TextArea from "@/components/TextArea";
-import { useSession } from "next-auth/react";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "../../../components/SubmitButton";
 import Avatar from "@mui/joy/Avatar";
-import Checkbox, { checkboxClasses } from "@mui/joy/Checkbox";
+import Checkbox from "@mui/joy/Checkbox";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import Sheet from "@mui/joy/Sheet";
-import { FormSchema, FormSchemaType } from "./form-schema";
-import { generatePairForMembersOnlyForAttending } from "./_actions";
-
-const ms: { name: string; present: boolean }[] = [
-  { name: "Rex", present: false },
-  { name: "William", present: false },
-  { name: "Marcelus", present: false },
-  { name: "Peter", present: false },
-  { name: "Selwyn", present: false },
-  { name: "Tamryn", present: false },
-  { name: "Rene", present: false },
-  { name: "Janice", present: false },
-  { name: "Michel", present: false },
-  { name: "Chantel", present: false },
-  { name: "Kiara", present: false },
-  { name: "Faith", present: true },
-];
+import {
+  generatePairForMembers,
+  getGroups,
+  getMembers,
+  intitializeMembers,
+} from "./_actions";
+import { GroupClass, MemberClass } from "@/models/schema/Member";
+import Option from "@mui/joy/Option";
+import { accordionDetailsClasses } from "@mui/joy/AccordionDetails";
+import { accordionSummaryClasses } from "@mui/joy/AccordionSummary";
+import {
+  EditNotificationsRounded,
+  TapAndPlayRounded,
+} from "@mui/icons-material";
 
 const NewOrder = () => {
-  // const [result, setResult] = useState<ValidationResult>();
-  const { data: session } = useSession();
-  const [showSubmitButton, setShowSubmitButton] = useState(true);
-  const [newPairs, setNewPairs] = useState<[string, string][]>([]);
-  const { push } = useRouter();
-  const [members, setMembers] = React.useState(ms);
+  const [generatedPairs, setNewPairs] = useState<{
+    pairs: [string, string][];
+    oddMember: string | null;
+  }>();
 
-  async function fetchOrders() {
-    const pairs = await generatePairForMembersOnlyForAttending(
-      ms.map((m) => m.name)
-    );
-    setNewPairs(pairs);
+  const [members, setMembers] = React.useState<MemberClass[]>([]);
+  const [checkboxes, setCheckboxes] = React.useState<boolean[]>([]);
+  const [groups, setGroups] = useState<GroupClass[]>([]);
+  const [index, setIndex] = React.useState<number | null>(0);
+
+  async function fetch() {
+    await intitializeMembers();
+    const grps = await getGroups();
+    setGroups(grps);
   }
 
   useEffect(() => {
-    fetchOrders();
+    fetch();
   }, []);
 
+  useEffect(() => {
+    setCheckboxes(members.map((_, i) => i < 2));
+  }, [members]);
+
   const toggleMember = (index: number) => () => {
-    const newMembers = [...members];
-    newMembers[index].present = !newMembers[index].present;
-    setMembers(newMembers);
+    const newValues = [...checkboxes];
+    newValues[index] = !newValues[index];
+    setCheckboxes(newValues);
   };
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormSchemaType>({
-    resolver: zodResolver(FormSchema),
-  });
+  const processForm = async (event: React.SyntheticEvent | null) => {
+    event?.preventDefault();
 
-  const processForm: SubmitHandler<FormSchemaType> = async (data) => {
-    console.log(data);
+    const attendance = checkboxes
+      .filter((c) => c)
+      .map((_, i) => members[i].name.toString());
+    const pairs = await generatePairForMembers(attendance);
+    setNewPairs(pairs);
+    setIndex(1);
   };
+  async function setMembersPerGroup(
+    _: React.SyntheticEvent | null,
+    newValue: string | null
+  ) {
+    if (newValue) {
+      const mbrs = await getMembers(newValue);
+      setMembers(mbrs);
+    }
+  }
+  function reset() {
+    setCheckboxes(checkboxes.map(() => false));
+  }
+
   return (
     <Box
       sx={{
         mx: "auto", // margin left & right
-        minWidth: "50%",
+        maxWidth: "100%",
         my: 4, // margin top & bottom
         py: 3, // padding top & bottom
-        px: 2, // padding left & right
+        // px: 2, // padding left & right
         display: "flex",
         flexDirection: "column",
         gap: 2,
         borderRadius: "sm",
-        boxShadow: "md",
+        // boxShadow: "md",
       }}
     >
-      <div>
-        <Typography sx={{ textAlign: "center" }} level="h4" component="h1">
-          <b>Generate field service partners</b>
-        </Typography>
-      </div>
-      <form onSubmit={handleSubmit(processForm)}>
-        <Sheet
-          variant="outlined"
-          sx={{
-            p: 2,
-            borderRadius: "sm",
+      <AccordionGroup
+        variant="plain"
+        transition="0.2s"
+        sx={{
+          maxWidth: "100%",
+          borderRadius: "md",
+          [`& .${accordionDetailsClasses.content}.${accordionDetailsClasses.expanded}`]:
+            {
+              paddingBlock: "1rem",
+            },
+          [`& .${accordionSummaryClasses.button}`]: {
+            paddingBlock: "1rem",
+          },
+        }}
+      >
+        <Accordion
+          expanded={index === 0}
+          onChange={(_, expanded) => {
+            setIndex(expanded ? 0 : null);
           }}
         >
-          <Typography
-            id="member"
-            sx={{
-              textTransform: "uppercase",
-              letterSpacing: "lg",
-              fontWeight: "lg",
-              color: "text.secondary",
-              mb: 2,
-            }}
-          >
-            Members
-          </Typography>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
-            {members.map((m, index) => (
-              // <>
-              //   <input
-              //     type="checkbox"
-              //     id={`member-${index}`}
-              //     {...register(`members.${index}.present`)}
-              //   />
-              //   <label htmlFor={`member-${index}`}>{m.name}</label>
-              // </>
-              <Checkbox
-                key={index}
-                {...register(`members.${index}.name`)}
-                label={m.name}
-                checked={m.present}
-                onChange={toggleMember(index)}
-                color="success"
-                sx={{ color: "inherit" }}
-              />
-            ))}
-          </Box>
-          {errors.members && <p>{errors.members.message}</p>}
-          <Button
-            variant="outlined"
-            color="neutral"
-            size="sm"
-            onClick={() => reset()}
-            sx={{ px: 1.5, mt: 1 }}
-          >
-            Clear All
-          </Button>
-        </Sheet>
-        {/* <Button type="submit" sx={{ mt: 3 }}>
-          Submit
-        </Button> */}
-        {showSubmitButton && <SubmitButton></SubmitButton>}
-        {/* {!showSubmitButton && result?.success && (
-          <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              width: "100%",
-              flexDirection: "column",
-              mt: 3,
-            }}
-          >
-            <Alert
-              key={"Success"}
-              sx={{ alignItems: "flex-start" }}
-              startDecorator={<CheckCircleIcon />}
-              variant="soft"
-              color={"success"}
-              endDecorator={
-                <Box sx={{ display: { xs: "inline-grid", sm: "flex" } }}>
-                  <IconButton
-                    variant="solid"
-                    color={"success"}
-                    onClick={() => {
-                      push("/order/edit/" + result._id);
-                    }}
-                    sx={{ m: 2, mb: 0, px: 1, pb: 0.5 }}
-                  >
-                    Go to it
-                  </IconButton>
-                  <IconButton
-                    variant="solid"
-                    color={"success"}
-                    sx={{ m: 2, mb: 0, px: 1, pb: 0.5 }}
-                    onClick={() => setShowSubmitButton(true)}
-                  >
-                    Submit another
-                  </IconButton>
-                </Box>
-              }
-            >
-              <div>
-                <div>{"Success"}</div>
-                <Typography level="body-sm" color={"success"}>
-                  Order has been submitted.
-                </Typography>
-              </div>
-            </Alert>
-          </Box>
-        )} */}
-      </form>
-      {newPairs.length > 0 && (
-        <Box>
-          <Typography
-            sx={{ textAlign: "center", mb: 2 }}
-            level="h4"
-            component="h1"
-          >
-            <b>The generated partners</b>
-          </Typography>{" "}
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: 4,
-            }}
-          >
-            {newPairs.map((m, i) => (
-              <div key={i}>
-                <List
-                  variant="outlined"
+          <AccordionSummary>
+            <Avatar color="success">
+              <TapAndPlayRounded />
+            </Avatar>
+            <ListItemContent>
+              <Typography level="title-md">Generate</Typography>
+              <Typography level="body-sm">
+                Generate field service partners
+              </Typography>
+            </ListItemContent>
+          </AccordionSummary>
+          <AccordionDetails>
+            {groups.length > 0 && (
+              <FormControl size="sm" sx={{ my: 1 }}>
+                <FormLabel>Group</FormLabel>
+                <Select
+                  size="sm"
+                  placeholder="Select a group"
+                  slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
+                  onChange={setMembersPerGroup}
+                >
+                  {groups.map((g) => (
+                    <Option key={g._id?.toString()} value={g._id?.toString()}>
+                      {g.name}
+                    </Option>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+
+            <form onSubmit={processForm}>
+              <Sheet
+                variant="outlined"
+                sx={{
+                  p: 2,
+                  borderRadius: "sm",
+                }}
+              >
+                <Typography
+                  id="member"
                   sx={{
-                    minWidth: 240,
-                    borderRadius: "sm",
+                    textTransform: "uppercase",
+                    letterSpacing: "lg",
+                    fontWeight: "lg",
+                    color: "text.secondary",
+                    mb: 3,
                   }}
                 >
-                  <ListItem>
-                    <ListItemDecorator>
-                      <Avatar size="sm" src="/static/images/avatar/1.jpg" />
-                    </ListItemDecorator>
-                    {m[0]}
-                  </ListItem>
-                  <ListDivider inset={"gutter"} />
-                  <ListItem>
-                    <ListItemDecorator>
-                      <Avatar size="sm" src="/static/images/avatar/2.jpg" />
-                    </ListItemDecorator>
-                    {m[1]}
-                  </ListItem>
-                </List>
-              </div>
-            ))}
-          </Box>
-        </Box>
-      )}
+                  Please select those that are in attendance
+                </Typography>
+                <Divider></Divider>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3, my: 3 }}>
+                  {members.map((m, index) => (
+                    <Checkbox
+                      key={index}
+                      name={index.toString()}
+                      label={m.name}
+                      checked={checkboxes[index] || false} // Ensure checked is always defined
+                      onChange={toggleMember(index)}
+                      color="success"
+                      sx={{ color: "inherit" }}
+                    />
+                  ))}
+                </Box>
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  type="button"
+                  onClick={reset}
+                  sx={{ px: 1.5, mt: 3 }}
+                >
+                  Clear All. Total
+                </Button>
+
+                <Typography sx={{ mt: 3 }} level="body-sm" color="primary">
+                  {checkboxes.filter((c) => c).length} Selected
+                </Typography>
+              </Sheet>
+              <SubmitButton></SubmitButton>
+            </form>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          expanded={index === 1}
+          onChange={(event, expanded) => {
+            setIndex(expanded ? 1 : null);
+          }}
+        >
+          <AccordionSummary>
+            <Avatar color="primary">
+              <EditNotificationsRounded />
+            </Avatar>
+            <ListItemContent>
+              <Typography level="title-md">The pairs</Typography>
+              <Typography level="body-sm">
+                The generated field service partners.
+              </Typography>
+            </ListItemContent>
+          </AccordionSummary>
+          <AccordionDetails>
+            {generatedPairs && (
+              <Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: 4,
+                  }}
+                >
+                  {generatedPairs.pairs.map((m, i) => (
+                    <div key={i}>
+                      <List
+                        variant="outlined"
+                        sx={{
+                          minWidth: 240,
+                          borderRadius: "sm",
+                        }}
+                      >
+                        <ListItem>
+                          <ListItemDecorator>
+                            <Avatar size="sm" />
+                          </ListItemDecorator>
+                          {m[0]}
+                        </ListItem>
+                        <ListDivider inset={"gutter"} />
+                        <ListItem>
+                          <ListItemDecorator>
+                            <Avatar size="sm" />
+                          </ListItemDecorator>
+                          {m[1]}
+                        </ListItem>
+                      </List>
+                    </div>
+                  ))}
+                  {generatedPairs.oddMember && (
+                    <Chip
+                      variant="outlined"
+                      color="neutral"
+                      size="lg"
+                      startDecorator={<Avatar size="sm" />}
+                      onClick={() => alert("You clicked the Joy Chip!")}
+                    >
+                      {generatedPairs.oddMember}
+                    </Chip>
+                  )}
+                </Box>
+              </Box>
+            )}
+          </AccordionDetails>
+        </Accordion>
+      </AccordionGroup>
     </Box>
   );
 };
