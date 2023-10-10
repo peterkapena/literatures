@@ -5,7 +5,7 @@ import ColorSchemeToggle from "@/components/ColorSchemeToggle";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Sheet, Typography } from "@mui/joy";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormSchema, FormSchemaType } from "./form-schema";
 import { IS_DEVELOPER } from "@/common";
 import TextField from "@/components/TextField";
@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { SubmitLoadingButton } from "../../../components/SubmitLoadingButton";
 import { Notice } from "../../../components/Notice";
+import { initializeUser } from "../signup/_actions";
+import { PETER_KAPENA_EMAIL, PETER_KAPENA_PASSWORD } from "@/utils/constants";
 
 export default function Page() {
   const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -29,10 +31,16 @@ export default function Page() {
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email_or_username: IS_DEVELOPER ? "peterkapenapeter@gmail.com" : "",
-      password: IS_DEVELOPER ? "0FROEFNSUlCQ2dLQ0FRRUFrUG5wTDJ" : "",
+      email_or_username: IS_DEVELOPER ? PETER_KAPENA_EMAIL : "",
+      password: IS_DEVELOPER ? PETER_KAPENA_PASSWORD : "",
     },
   });
+  async function fetch() {
+    await initializeUser();
+  }
+  useEffect(() => {
+    fetch();
+  }, []);
 
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
     try {

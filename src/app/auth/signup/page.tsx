@@ -16,6 +16,7 @@ import ConfirmPassword from "@/components/ConfirmPassword";
 import { useRouter } from "next/navigation";
 import { SubmitLoadingButton } from "@/components/SubmitLoadingButton";
 import { Notice } from "../../../components/Notice";
+import { PETER_KAPENA_EMAIL, PETER_KAPENA_PASSWORD } from "@/utils/constants";
 
 export default function Page() {
   const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -32,10 +33,10 @@ export default function Page() {
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: IS_DEVELOPER ? "peterkapenapeter@gmail.com" : "",
-      password: IS_DEVELOPER ? "0FROEFNSUlCQ2dLQ0FRRUFrUG5wTDJ" : "",
-      username: IS_DEVELOPER ? "peterkapena" : "",
-      confirm_password: IS_DEVELOPER ? "0FROEFNSUlCQ2dLQ0FRRUFrUG5wTDJ" : "",
+      email: IS_DEVELOPER ? PETER_KAPENA_EMAIL : "",
+      password: IS_DEVELOPER ? PETER_KAPENA_PASSWORD : "",
+      username: IS_DEVELOPER ? PETER_KAPENA_EMAIL?.split("@")[0] : "",
+      confirm_password: IS_DEVELOPER ? PETER_KAPENA_PASSWORD : "",
     },
   });
 

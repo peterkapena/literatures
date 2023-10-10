@@ -1,7 +1,6 @@
 "use client";
 import { Alert, Box, Chip, Grid, IconButton, Typography } from "@mui/joy";
 import React, { useEffect, useState } from "react";
-import Button from "@mui/joy/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "@/components/TextField";
@@ -11,16 +10,15 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { edit, getOrder } from "../../create/_actions";
 import { OrderClass } from "@/models/schema/Order";
-import { ArrowBack, DateRangeOutlined, Save } from "@mui/icons-material";
-import { useRouter } from "next/navigation";
+import { DateRangeOutlined } from "@mui/icons-material";
 import { FormSchemaType, FormSchema } from "../../create/form-schema";
+import { SaveButton } from "./SaveButton";
 
 const NewOrder = ({ params }: { params: { id: string } }) => {
   const [result, setResult] = useState<Boolean>();
   const { data: session } = useSession();
   const [showSubmitButton, setShowSubmitButton] = useState(true);
   const [order, setOrder] = useState<OrderClass>();
-  const router = useRouter();
 
   useEffect(() => {
     getOrder(params.id).then((strOrder) => {
@@ -38,8 +36,6 @@ const NewOrder = ({ params }: { params: { id: string } }) => {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       literature: order?.literature.toString(),
-      // quantity: (order && +order?.quantity) ?? 0,
-      // notes: order?.notes?.toString() || "",
     },
   });
 
@@ -146,27 +142,7 @@ const NewOrder = ({ params }: { params: { id: string } }) => {
                 ></TextArea>
               </Grid>
             </Grid>
-            {showSubmitButton && (
-              <Box display={"flex"} justifyContent={"space-around"}>
-                <Button
-                  type="button"
-                  onClick={() => router.back()}
-                  sx={{ mt: 3 }}
-                  variant="plain"
-                  startDecorator={<ArrowBack />}
-                >
-                  Return
-                </Button>
-                <Button
-                  type="submit"
-                  sx={{ mt: 3 }}
-                  variant="outlined"
-                  startDecorator={<Save />}
-                >
-                  Save
-                </Button>
-              </Box>
-            )}
+            {showSubmitButton && <SaveButton />}
             {!showSubmitButton && result && (
               <Box
                 sx={{
@@ -212,3 +188,4 @@ const NewOrder = ({ params }: { params: { id: string } }) => {
 };
 
 export default NewOrder;
+

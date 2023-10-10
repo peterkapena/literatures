@@ -5,6 +5,15 @@ import { UserService } from "@peterkapena/user_auth";
 import { DuplicateCheck } from "@peterkapena/user_auth/src/services/UserService";
 import { FormSchema, FormSchemaType } from "./form-schema";
 
+export async function initializeUser() {
+  return signUp({
+    confirm_password: process.env.PETER_KAPENA_PASSWORD || "",
+    password: process.env.PETER_KAPENA_PASSWORD || "",
+    email: process.env.PETER_KAPENA_EMAIL || "",
+    username: process.env.PETER_KAPENA_EMAIL?.split("@")[0] || "",
+  });
+}
+
 export async function signUp(cred: FormSchemaType): Promise<Boolean> {
   try {
     if (await connectToDB()) {

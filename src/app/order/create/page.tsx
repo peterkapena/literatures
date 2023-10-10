@@ -1,7 +1,6 @@
 "use client";
 import { Alert, Box, Grid, IconButton, Typography } from "@mui/joy";
 import React, { useState } from "react";
-import Button from "@mui/joy/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSchema, FormSchemaType, ValidationResult } from "./form-schema";
@@ -10,15 +9,14 @@ import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
 import { useSession } from "next-auth/react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { ArrowBack } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { SubmitButton } from "../../../components/SubmitButton";
 
 const NewOrder = () => {
   const [result, setResult] = useState<ValidationResult>();
   const { data: session } = useSession();
   const [showSubmitButton, setShowSubmitButton] = useState(true);
   const { push } = useRouter();
-  const router = useRouter();
 
   const {
     register,
@@ -63,7 +61,6 @@ const NewOrder = () => {
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
-          // columns={{ xs: "auto", sm: 2, md: 12 }}
           sx={{ flexGrow: 1 }}
         >
           <Grid xs={12} sm={8} md={8} key={5}>
@@ -101,22 +98,7 @@ const NewOrder = () => {
             ></TextArea>
           </Grid>
         </Grid>
-        {showSubmitButton && (
-          <Box display={"flex"} justifyContent={"space-around"}>
-            <Button
-              type="button"
-              onClick={() => router.back()}
-              sx={{ mt: 3 }}
-              variant="plain"
-              startDecorator={<ArrowBack />}
-            >
-              Return
-            </Button>
-            <Button type="submit" sx={{ mt: 3 }}>
-              Submit
-            </Button>
-          </Box>
-        )}
+        {showSubmitButton && <SubmitButton></SubmitButton>}
         {!showSubmitButton && result?.success && (
           <Box
             sx={{
