@@ -6,17 +6,20 @@ import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import Typography from "@mui/joy/Typography";
+import { ErrorOutlineOutlined, InfoRounded } from "@mui/icons-material";
 
 export type AlertProps = {
   message: string;
   onYes: () => void;
   onClose: () => void;
+  type: "warning" | "notice" | "error" | "confirm";
 };
 
 export default function AlertDialogModal({
   message,
   onYes,
   onClose,
+  type,
 }: AlertProps) {
   const [open, setOpen] = React.useState<boolean>(true);
   const close = () => {
@@ -35,9 +38,23 @@ export default function AlertDialogModal({
           <Typography
             id="alert-dialog-modal-title"
             level="h2"
-            startDecorator={<WarningRoundedIcon />}
+            startDecorator={
+              type === "warning" ? (
+                <WarningRoundedIcon />
+              ) : type === "error" ? (
+                <ErrorOutlineOutlined />
+              ) : (
+                <InfoRounded />
+              )
+            }
           >
-            Confirmation
+            {type === "warning"
+              ? "Warning!"
+              : type === "error"
+              ? "Error"
+              : type === "confirm"
+              ? "Confirm"
+              : "Please note"}
           </Typography>
           <Divider />
           <Typography
@@ -46,6 +63,7 @@ export default function AlertDialogModal({
           >
             {message}
           </Typography>
+
           <Box
             sx={{
               display: "flex",
@@ -54,16 +72,18 @@ export default function AlertDialogModal({
               pt: 2,
             }}
           >
-            <Button
-              variant="outlined"
-              color="danger"
-              onClick={() => {
-                onYes();
-                setOpen(false);
-              }}
-            >
-              Yes
-            </Button>
+            {type === "confirm" && (
+              <Button
+                variant="outlined"
+                color="danger"
+                onClick={() => {
+                  onYes();
+                  setOpen(false);
+                }}
+              >
+                Yes
+              </Button>
+            )}
             <Button variant="outlined" color="primary" onClick={close}>
               Cancel
             </Button>

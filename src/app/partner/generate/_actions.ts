@@ -6,7 +6,7 @@ import {
   MemberClass,
   MemberModel,
 } from "@/models/schema/Member";
-import { PairsClass } from "@/models/schema/Pairs";
+import { PairsClass, PairsModel } from "@/models/schema/Pairs";
 
 function getRandomMember(arr: string[]): string {
   const randomIndex = Math.floor(Math.random() * arr.length);
@@ -29,7 +29,6 @@ export async function generatePairForMembers(
 
   if (remainingMembers.length === 1) {
     oddMember = remainingMembers[0];
-    console.log(oddMember);
   }
   return { list: newPairs, oddMember };
 }
@@ -77,4 +76,16 @@ export async function getGroups(): Promise<GroupClass[]> {
     const gp: GroupClass = { name: g.name, _id: g._id.toString() };
     return gp;
   });
+}
+
+export async function savePairs(pairs: {
+  list: [string, string][];
+  oddMember?: string | null;
+}): Promise<boolean> {
+  try {
+    await PairsModel.create(pairs);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }

@@ -58,7 +58,7 @@ export function PairsForm({ onSubmit }: PairsFormProps) {
     }
   }
 
-  const processForm = async (event: React.SyntheticEvent | null) => {
+  const processForm = async (event: React.SyntheticEvent) => {
     event?.preventDefault();
 
     const attendance = checkboxes

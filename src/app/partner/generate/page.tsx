@@ -83,7 +83,7 @@ const NewOrder = () => {
         </Accordion>
         <Accordion
           expanded={index === 1}
-          onChange={(event, expanded) => {
+          onChange={(_, expanded) => {
             setIndex(expanded ? 1 : null);
           }}
         >
