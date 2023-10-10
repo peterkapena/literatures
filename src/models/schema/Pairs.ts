@@ -1,10 +1,11 @@
 import { getModelForClass, prop } from "@typegoose/typegoose";
 import { models } from "mongoose";
+import { MemberClass } from "./Member";
 
 export class PairsClass {
   @prop({ required: true })
-  list!: [string, string][];
-  oddMember?: string | null;
+  list!: [MemberClass, MemberClass][];
+  oddMember?: MemberClass | null;
 }
 
 interface PairsClassSchemaQueryHelpers {}

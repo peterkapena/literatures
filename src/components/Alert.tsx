@@ -85,7 +85,7 @@ export default function AlertDialogModal({
               </Button>
             )}
             <Button variant="outlined" color="primary" onClick={close}>
-              Cancel
+              {type === "warning" || type === "confirm" ? "Cancel" : "Ok"}
             </Button>
           </Box>
         </ModalDialog>

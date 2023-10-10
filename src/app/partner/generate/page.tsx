@@ -6,11 +6,9 @@ import {
   AccordionSummary,
   Box,
   ListItemContent,
-  Table,
   Typography,
 } from "@mui/joy";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import Avatar from "@mui/joy/Avatar";
 import { accordionDetailsClasses } from "@mui/joy/AccordionDetails";
 import { accordionSummaryClasses } from "@mui/joy/AccordionSummary";
@@ -20,7 +18,7 @@ import {
 } from "@mui/icons-material";
 import { PairsClass } from "@/models/schema/Pairs";
 import { PairsComponent } from "../../../components/PairsComponent";
-import { PairsForm } from "../../../components/PairsForm";
+import { PairsForm } from "../../../components/MembersForm";
 
 const NewOrder = () => {
   const [generatedPairs, setNewPairs] = useState<PairsClass>();
@@ -36,7 +34,7 @@ const NewOrder = () => {
     <Box
       sx={{
         mx: "auto",
-        maxWidth: "100%",
+        maxWidth: "900px",
         my: 4,
         py: 3,
         display: "flex",
