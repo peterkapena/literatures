@@ -6,6 +6,7 @@ import {
   MemberClass,
   MemberModel,
 } from "@/models/schema/Member";
+import { PairsClass } from "@/models/schema/Pairs";
 
 function getRandomMember(arr: string[]): string {
   const randomIndex = Math.floor(Math.random() * arr.length);
@@ -14,7 +15,7 @@ function getRandomMember(arr: string[]): string {
 
 export async function generatePairForMembers(
   members: string[]
-): Promise<{ pairs: [string, string][]; oddMember: string | null }> {
+): Promise<PairsClass> {
   const remainingMembers = [...members];
   const newPairs: [string, string][] = [];
   let oddMember: string | null = null;
@@ -28,9 +29,9 @@ export async function generatePairForMembers(
 
   if (remainingMembers.length === 1) {
     oddMember = remainingMembers[0];
+    console.log(oddMember);
   }
-  console.log(remainingMembers);
-  return { pairs: newPairs, oddMember };
+  return { list: newPairs, oddMember };
 }
 
 export async function intitializeMembers() {
