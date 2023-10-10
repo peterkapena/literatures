@@ -67,9 +67,10 @@ export function PairsForm({ onSubmit }: PairsFormProps) {
 
   const processForm = async (event: React.SyntheticEvent) => {
     event?.preventDefault();
-
-    const pairs = await generatePairForMembers(selected);
-    onSubmit(pairs);
+    if (selected.length > 2) {
+      const pairs = await generatePairForMembers(selected);
+      onSubmit(pairs);
+    }
   };
 
   async function addMbr(_: React.SyntheticEvent) {
@@ -111,21 +112,16 @@ export function PairsForm({ onSubmit }: PairsFormProps) {
           >
             <Box sx={{ display: "flex", justifyContent: "start", my: 2 }}>
               <Grid container sx={{ flexGrow: 1 }}>
-                <Grid xs={5} sm={4} md={4}>
+                <Grid xs={5} sm={4} md={2}>
                   <Chip
                     variant="outlined"
                     color="warning"
                     onClick={() => setSelected([])}
-                    endDecorator={
-                      <ChipDelete color="danger" variant="plain">
-                        <DeleteForever />
-                      </ChipDelete>
-                    }
                   >
                     Clear selection
                   </Chip>
                 </Grid>
-                <Grid xs={7} sm={4} md={4}>
+                <Grid xs={7} sm={4} md={10}>
                   <Box sx={{ mx: 1 }}>
                     <Input
                       onChange={(e) => setNewMember(e.target.value)}

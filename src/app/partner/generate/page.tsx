@@ -59,6 +59,8 @@ const NewOrder = () => {
         }}
       >
         <Accordion
+          color="success"
+          variant="outlined"
           expanded={index === 0}
           onChange={(_, expanded) => {
             setIndex(expanded ? 0 : null);
@@ -80,6 +82,8 @@ const NewOrder = () => {
           </AccordionDetails>
         </Accordion>
         <Accordion
+          color="success"
+          variant="outlined"
           expanded={index === 1}
           onChange={(_, expanded) => {
             setIndex(expanded ? 1 : null);

@@ -65,7 +65,9 @@ export async function addMember(groupId: String, name: String) {
 }
 
 export async function getMembers(groupId: String): Promise<MemberClass[]> {
-  const members = (await MemberModel.find({ groupId })) as MemberClass[];
+  const members = (await MemberModel.find({ groupId }).sort(
+    "-when_created"
+  )) as MemberClass[];
   return members.map((member) => {
     return {
       _id: member._id?.toString(),
@@ -96,8 +98,7 @@ export async function savePairs(pairs: {
 
 export async function deleteMember(_id: String): Promise<boolean> {
   try {
-    const result = await MemberModel.deleteOne({ _id });
-    console.log(result);
+    await MemberModel.deleteOne({ _id });
     return true;
   } catch (error) {
     return false;

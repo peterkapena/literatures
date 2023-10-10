@@ -1,4 +1,4 @@
-import { getModelForClass, prop } from "@typegoose/typegoose";
+import { getModelForClass, pre, prop } from "@typegoose/typegoose";
 import { models } from "mongoose";
 
 interface GroupClassSchemaQueryHelpers {}
@@ -16,12 +16,18 @@ export const GroupModel =
       options: { customName: "Group" },
     }
   );
+
+@pre<MemberClass>("save", function () {
+  this.when_created = new Date().toISOString();
+})
 export class MemberClass {
   _id?: String;
   @prop({ required: true })
   name!: String;
   @prop({ required: true })
   groupId!: String;
+  @prop()
+  when_created?: String;
 }
 
 interface MemberClassSchemaQueryHelpers {}
