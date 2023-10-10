@@ -1,5 +1,5 @@
 "use client";
-import { Alert, Box, Grid, IconButton, Typography } from "@mui/joy";
+import { Alert, Box, Card, Grid, IconButton, Typography } from "@mui/joy";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,11 +39,9 @@ const NewOrder = () => {
     setResult(result);
   };
   return (
-    <Box>
+    <Card>
       <div>
-        <Typography sx={{ textAlign: "center" }} level="h4" component="h1">
-          <b>Submit an order</b>
-        </Typography>
+        <Typography level="h2">Submit an order</Typography>
       </div>
       <form onSubmit={handleSubmit(processForm)}>
         <Grid container spacing={{ xs: 2, md: 3 }} sx={{ flexGrow: 1 }}>
@@ -132,7 +130,7 @@ const NewOrder = () => {
           </Box>
         )}
       </form>
-    </Box>
+    </Card>
   );
 };
 

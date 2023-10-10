@@ -11,7 +11,7 @@ import React from "react";
 import Avatar from "@mui/joy/Avatar";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
-import { SaveButton } from "@/app/order/edit/[id]/SaveButton";
+import { SaveButton } from "@/components/SaveButton";
 import { savePairs } from "@/app/partner/generate/_actions";
 import AlertDialogModal from "./Alert";
 import { MemberClass } from "@/models/schema/Member";

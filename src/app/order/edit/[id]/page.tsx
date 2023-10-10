@@ -1,5 +1,14 @@
 "use client";
-import { Alert, Box, Chip, Grid, IconButton, Typography } from "@mui/joy";
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  Chip,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/joy";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,17 +17,21 @@ import TextArea from "@/components/TextArea";
 import { useSession } from "next-auth/react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { edit, getOrder } from "../../create/_actions";
+import { _delete, edit, getOrder } from "../../create/_actions";
 import { OrderClass } from "@/models/schema/Order";
-import { DateRangeOutlined } from "@mui/icons-material";
+import { DateRangeOutlined, DeleteRounded } from "@mui/icons-material";
 import { FormSchemaType, FormSchema } from "../../create/form-schema";
-import { SaveButton } from "./SaveButton";
+import { SaveButton } from "../../../../components/SaveButton";
+import AlertDialogModal from "@/components/Alert";
+import { useRouter } from "next/navigation";
 
 const NewOrder = ({ params }: { params: { id: string } }) => {
   const [result, setResult] = useState<Boolean>();
   const { data: session } = useSession();
   const [showSubmitButton, setShowSubmitButton] = useState(true);
   const [order, setOrder] = useState<OrderClass>();
+  const [confirmDelete, setConfirmDelete] = useState<any>();
+  const { push } = useRouter();
 
   useEffect(() => {
     getOrder(params.id).then((strOrder) => {
@@ -66,18 +79,48 @@ const NewOrder = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <Box>
-      <Typography level="h3">Editing order</Typography>
+    <Card>
+      <Box
+        sx={{
+          display: "flex",
+          my: 1,
+          gap: 1,
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { xs: "start", sm: "center" },
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography level="h2">
+          Order <Typography level="body-xs">{params.id}</Typography>
+        </Typography>
+        <Button
+          color="danger"
+          startDecorator={<DeleteRounded />}
+          size="sm"
+          onClick={setConfirmDelete}
+        >
+          Delete
+        </Button>
+        {confirmDelete && (
+          <AlertDialogModal
+            message="Please comfirm deletion. Are you sure?"
+            onClose={() => setConfirmDelete(false)}
+            onYes={async () => {
+              if (await _delete(params.id)) push("/");
+            }}
+            type="confirm"
+          ></AlertDialogModal>
+        )}
+      </Box>
+
       {order?._id ? (
-        <Box>
+        <Box sx={{ my: 1 }}>
           <div>
             <Typography sx={{ textAlign: "center" }} level="h4" component="h1">
               <Box
                 sx={{ mb: 2, display: "flex", justifyContent: "flex-start" }}
               >
-                <Typography level="body-md" sx={{ mr: 1 }}>
-                  Submitted on
-                </Typography>
                 <Chip
                   color="success"
                   variant="outlined"
@@ -170,7 +213,7 @@ const NewOrder = ({ params }: { params: { id: string } }) => {
       ) : (
         <Box>Loading...</Box>
       )}
-    </Box>
+    </Card>
   );
 };
 

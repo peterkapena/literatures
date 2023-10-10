@@ -1,13 +1,16 @@
 "use client";
 import * as React from "react";
-import { Box, CircularProgress, Typography } from "@mui/joy";
+import { Box, Button, CircularProgress, Typography } from "@mui/joy";
 import OrderList from "@/components/OrderList";
 import { useSession } from "next-auth/react";
+import { ArticleRounded } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { data: session } = useSession();
-  // console.log(session);
   if (!(session?.user as any)?.id) return <CircularProgress></CircularProgress>;
+
+  const { push } = useRouter();
 
   return (
     <Box>
@@ -23,9 +26,16 @@ const Page = () => {
         }}
       >
         <Typography level="h2">Orders</Typography>
+        <Button
+          color="warning"
+          endDecorator={<ArticleRounded />}
+          size="md"
+          onClick={() => push("/order/create")}
+        >
+          Submit an order
+        </Button>
       </Box>
-      {/* <OrderTablex userId={(session?.user as any)?.id} /> */}
-      <OrderList userId={(session?.user as any)?.id}/>
+      <OrderList userId={(session?.user as any)?.id} />
     </Box>
   );
 };
