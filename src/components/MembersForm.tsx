@@ -27,11 +27,7 @@ import {
 import { GroupClass, MemberClass } from "@/models/schema/Member";
 import Option from "@mui/joy/Option";
 import { PairsClass } from "@/models/schema/Pairs";
-import {
-  CheckOutlined,
-  DeleteForever,
-  InfoOutlined,
-} from "@mui/icons-material";
+import { CheckOutlined, InfoOutlined } from "@mui/icons-material";
 import AlertDialogModal from "./Alert";
 
 type PairsFormProps = {

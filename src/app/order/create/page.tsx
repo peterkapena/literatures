@@ -27,8 +27,9 @@ const NewOrder = () => {
     resolver: zodResolver(FormSchema),
   });
 
+  // console.log((session as any)?.user.id)
   const processForm: SubmitHandler<FormSchemaType> = async (data) => {
-    const result = await createOrder(data, (session as any)?.id);
+    const result = await createOrder(data, (session as any)?.user.id);
 
     if (!result) {
       return;
@@ -38,31 +39,14 @@ const NewOrder = () => {
     setResult(result);
   };
   return (
-    <Box
-      sx={{
-        maxWidth: "900px",
-        mx: "auto", // margin left & right
-        my: 4, // margin top & bottom
-        py: 3, // padding top & bottom
-        px: 2, // padding left & right
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        borderRadius: "sm",
-        boxShadow: "md",
-      }}
-    >
+    <Box>
       <div>
         <Typography sx={{ textAlign: "center" }} level="h4" component="h1">
           <b>Submit an order</b>
         </Typography>
       </div>
       <form onSubmit={handleSubmit(processForm)}>
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          sx={{ flexGrow: 1 }}
-        >
+        <Grid container spacing={{ xs: 2, md: 3 }} sx={{ flexGrow: 1 }}>
           <Grid xs={12} sm={8} md={8} key={5}>
             <TextField
               disabled={Boolean(!showSubmitButton && result)}

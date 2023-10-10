@@ -8,7 +8,7 @@ export async function createOrder(
   userId: string
 ): Promise<ValidationResult> {
   const result = FormSchema.safeParse(data);
-
+console.log(userId)
   if (result.success) {
     try {
       const order = await (
@@ -31,7 +31,6 @@ export async function getOrders(userId?: string) {
   if (userId) {
     const user = (await UserModel.findById(userId)) as User;
     if (user && user.roles?.includes("admin")) {
-      // console.log(user);
       const rtn = await (await OrderService._()).getOrders();
       return JSON.stringify(rtn);
     } else if (user._id) {
@@ -74,6 +73,6 @@ export async function edit(
   return false;
 }
 
-export async function _delete(id: string): Promise<boolean> {
+export async function _delete(id: String): Promise<boolean> {
   return await (await OrderService._()).delete(id);
 }

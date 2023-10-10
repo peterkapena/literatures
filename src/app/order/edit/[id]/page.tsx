@@ -66,20 +66,7 @@ const NewOrder = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <Box
-      sx={{
-        maxWidth: "900px",
-        mx: "auto", // margin left & right
-        my: 4, // margin top & bottom
-        py: 3, // padding top & bottom
-        px: 2, // padding left & right
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        borderRadius: "sm",
-        boxShadow: "md",
-      }}
-    >
+    <Box>
       <Typography level="h3">Editing order</Typography>
       {order?._id ? (
         <Box>
@@ -188,4 +175,3 @@ const NewOrder = ({ params }: { params: { id: string } }) => {
 };
 
 export default NewOrder;
-

@@ -5,16 +5,12 @@ import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import { OrderClass } from "@/models/schema/Order";
 
-
-
 type OrderCardProps = {
   order: OrderClass;
   onDelete: () => void;
-  onEdit: () => void;
 };
-export default function OrderCard({ order}: OrderCardProps) {
+export default function OrderCard({ order }: OrderCardProps) {
   return (
-    
     <Card variant="plain">
       <Box sx={{ width: "100%" }}>
         <Typography
