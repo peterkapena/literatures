@@ -35,7 +35,12 @@ const Page = () => {
         </Button>
       </Box>
       <Box
-        sx={{ display: "flex", gap: 2, maxWidth: {sm:"50%"}, flexDirection: "column" }}
+        sx={{
+          display: "flex",
+          gap: 2,
+          maxWidth: { sm: "50%" },
+          flexDirection: "column",
+        }}
       >
         <Alert
           variant="outlined"
