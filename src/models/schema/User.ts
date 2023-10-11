@@ -12,3 +12,9 @@ const UserModel =
   });
 
 export { UserModel, User };
+
+export const Roles = {
+  Admin: "1",
+  PartnersGenerate: "2",
+  LiteratureOrder: "3",
+};

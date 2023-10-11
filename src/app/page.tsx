@@ -1,16 +1,15 @@
 "use client";
 import * as React from "react";
-import { Box, Button, CircularProgress, Typography } from "@mui/joy";
-import OrderList from "@/components/OrderList";
+import { Alert, Box, Button, CircularProgress, Typography } from "@mui/joy";
 import { useSession } from "next-auth/react";
-import { ArticleRounded } from "@mui/icons-material";
+import { ArticleRounded, InfoRounded } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { data: session } = useSession();
-  if (!(session?.user as any)?.id) return <CircularProgress></CircularProgress>;
-
   const { push } = useRouter();
+
+  if (!(session?.user as any)?.id) return <CircularProgress></CircularProgress>;
 
   return (
     <Box>
@@ -25,7 +24,7 @@ const Page = () => {
           justifyContent: "space-between",
         }}
       >
-        <Typography level="h2">Orders</Typography>
+        <Typography level="h2">Welcome!</Typography>
         <Button
           color="warning"
           endDecorator={<ArticleRounded />}
@@ -35,7 +34,36 @@ const Page = () => {
           Submit an order
         </Button>
       </Box>
-      <OrderList userId={(session?.user as any)?.id} />
+      <Box
+        sx={{ display: "flex", gap: 2, width: "50%", flexDirection: "column" }}
+      >
+        <Alert
+          variant="outlined"
+          startDecorator={<InfoRounded color="primary" />}
+        >
+          <div>
+            <div>What is this?</div>
+            <Typography level="body-sm">
+              This platform is essentially for usage at your local congregation
+              to facilitate some adminitrative tasks. It can be used to submit
+              literature orders instead of doing it from the kingdom hall desk
+              and having your order forgotten..
+            </Typography>
+          </div>
+        </Alert>
+        <Alert
+          variant="outlined"
+          startDecorator={<InfoRounded color="primary" />}
+        >
+          <div>
+            <div>What else?</div>
+            <Typography level="body-sm">
+              The platform can also be used to generate field service partners
+              in your respective groups.
+            </Typography>
+          </div>
+        </Alert>
+      </Box>
     </Box>
   );
 };

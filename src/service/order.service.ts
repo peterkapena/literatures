@@ -3,6 +3,10 @@ import { connectToDB } from "./mongo";
 import User from "@peterkapena/user_auth/src/models/User";
 import { UserModel } from "@/models/schema/User";
 
+interface GetOrdersReturn {
+  order: OrderClass;
+  user: { username: String; email: String };
+}
 export default class OrderService {
   static async _(): Promise<OrderService> {
     await connectToDB();
@@ -13,31 +17,32 @@ export default class OrderService {
     return await OrderModel.create(input);
   }
 
-  async getOrdersByUser(userId: String): Promise<
-    {
-      order: OrderClass;
-      user: User;
-    }[]
-  > {
+  async getOrdersByUser(userId: String): Promise<GetOrdersReturn[]> {
     const rtn = await Promise.all(
       (
         await OrderModel.find({ userId }).sort({ when_created: -1 })
-      ).map(async (order: OrderClass) => ({
-        order,
-        user: await UserModel.findById(order.userId),
-      }))
+      ).map(async (order: OrderClass) => {
+        const user = (await UserModel.findById(order.userId)) as User;
+        return {
+          order,
+          user: { username: user.username, email: user.email },
+        };
+      })
     );
     return rtn;
   }
 
-  async getOrders(): Promise<{ order: OrderClass; user: User }[]> {
+  async getOrders(): Promise<GetOrdersReturn[]> {
     const orders = await OrderModel.find().sort({ when_created: -1 });
 
     const rtn = await Promise.all(
-      orders.map(async (o) => ({
-        order: o,
-        user: await UserModel.findById(o.userId),
-      }))
+      orders.map(async (order: OrderClass) => {
+        const user = (await UserModel.findById(order.userId)) as User;
+        return {
+          order,
+          user: { username: user.username, email: user.email },
+        };
+      })
     );
 
     return rtn;

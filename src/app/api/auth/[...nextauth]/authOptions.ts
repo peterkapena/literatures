@@ -6,6 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 export interface CustomSession extends Session {
   id: string;
+  roles: string[];
 }
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -56,6 +57,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, user, token }) {
       const usr = (await UserModel.findById(token.sub)) as User;
+      const ss: CustomSession = {
+        ...session,
+        id: usr._id?.toString() || "",
+        roles: usr.roles || [],
+      };
+
       user = {
         ...user,
         ...session.user,
@@ -63,7 +70,7 @@ export const authOptions: NextAuthOptions = {
         id: usr._id?.toString() || "",
       };
 
-      return { ...session, user };
+      return { ...ss, user };
     },
   },
 };

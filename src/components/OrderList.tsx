@@ -23,15 +23,17 @@ export default function OrderList({ userId }: OrderListProps) {
   const { push } = useRouter();
   const [data, setData] = React.useState<{ order: OrderClass; user: User }[]>();
 
+  React.useEffect(() => {
+    fetchOrders();
+  }, []);
+
   async function fetchOrders() {
     const strOrders = await getOrders(userId);
     const orders: { order: OrderClass; user: User }[] = JSON.parse(strOrders);
     setData(orders);
   }
-  React.useEffect(() => {
-    fetchOrders();
-  }, []);
-  console.log(data);
+
+  // console.log(data);
   return (
     <Grid container spacing={{ xs: 1, md: 3 }}>
       {data &&
@@ -97,7 +99,7 @@ export default function OrderList({ userId }: OrderListProps) {
                           level="body-sm"
                           component="button"
                           onClick={() =>
-                            push("order/edit/" + (datum.order._id || ""))
+                            push("/order/edit/" + (datum.order._id || ""))
                           }
                         >
                           view

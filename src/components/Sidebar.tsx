@@ -19,6 +19,7 @@ import ColorSchemeToggle from "./ColorSchemeToggle";
 import { closeSidebar } from "@/utils/helpers";
 import {
   AccountCircleRounded,
+  ArticleRounded,
   InfoOutlined,
   PeopleRounded,
   RoundedCorner,
@@ -26,9 +27,12 @@ import {
 import { APP_NAME } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { CustomSession } from "@/app/api/auth/[...nextauth]/authOptions";
 export default function Sidebar() {
-  const { data: session } = useSession();
   const { push } = useRouter();
+  const { data: session } = useSession();
+  const roles = (session as CustomSession)?.roles;
+  // console.log(roles);
   return (
     <div>
       {session?.user?.name && (
@@ -121,19 +125,36 @@ export default function Sidebar() {
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
+
+              <ListItem color="warning">
+                <ListItemButton
+                  onClick={() => push("/order/all")}
+                  color="warning"
+                >
+                  <ArticleRounded />
+                  <ListItemContent>
+                    <Typography level="title-sm">Orders</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+
+              {roles.some((r) => r === "Admin") && (
+                <ListItem>
+                  <ListItemButton onClick={() => push("/partner/generate")}>
+                    <PeopleRounded />
+                    <ListItemContent>
+                      <Typography level="title-sm">
+                        Generate partners
+                      </Typography>
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+              )}
               <ListItem>
                 <ListItemButton onClick={() => push("/")}>
                   <AccountCircleRounded />
                   <ListItemContent>
                     <Typography level="title-sm">My profile</Typography>
-                  </ListItemContent>
-                </ListItemButton>
-              </ListItem>
-              <ListItem>
-                <ListItemButton onClick={() => push("/partner/generate")}>
-                  <PeopleRounded />
-                  <ListItemContent>
-                    <Typography level="title-sm">Generate partners</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
@@ -156,7 +177,7 @@ export default function Sidebar() {
                 </IconButton>
               </Stack>
               <Typography level="body-xs">
-                You can submit a literature request from the button below?
+                You can submit a literature request from the button below
               </Typography>
               <Button
                 size="sm"
