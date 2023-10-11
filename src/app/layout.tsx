@@ -47,7 +47,7 @@ export default function RootLayout({ children, session }: Props) {
                   gap: 1,
                 }}
               >
-                {children}{" "}
+                {children}
               </Box>
             </Box>
           </SessionProvider>

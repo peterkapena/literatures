@@ -33,28 +33,33 @@ export async function generatePairForMembers(
   return { list: newPairs, oddMember };
 }
 
-export async function intitializeMembers() {
-  if ((await MemberModel.find()).length <= 0) {
-    const ms: { name: string; present: boolean }[] = [
-      { name: "Rex", present: false },
-      { name: "William", present: false },
-      { name: "Marcelus", present: false },
-      { name: "Peter", present: false },
-      { name: "Selwyn", present: false },
-      { name: "Tamryn", present: false },
-      { name: "Rene", present: false },
-      { name: "Janice", present: false },
-      { name: "Michel", present: false },
-      { name: "Chantel", present: false },
-      { name: "Kiara", present: false },
-      { name: "Faith", present: true },
-    ];
-    let group: GroupClass = { name: "Glenhood - Marcellus" };
-    group = await GroupModel.create(group);
-    ms.forEach(async (m) => {
-      if (group._id) await addMember(group._id, m.name);
-    });
-  }
+// export async function intitializeMembers() {
+//   if ((await MemberModel.find()).length <= 0) {
+//     const ms: { name: string; present: boolean }[] = [
+//       { name: "Rex", present: false },
+//       { name: "William", present: false },
+//       { name: "Marcelus", present: false },
+//       { name: "Peter", present: false },
+//       { name: "Selwyn", present: false },
+//       { name: "Tamryn", present: false },
+//       { name: "Rene", present: false },
+//       { name: "Janice", present: false },
+//       { name: "Michel", present: false },
+//       { name: "Chantel", present: false },
+//       { name: "Kiara", present: false },
+//       { name: "Faith", present: true },
+//     ];
+//     let group: GroupClass = await addGroup("Glenhood - Marcellus");
+//     ms.forEach(async (m) => {
+//       if (group._id) await addMember(group._id, m.name);
+//     });
+//   }
+// }
+
+export async function addGroup(name: string) {
+  let group: GroupClass = { name };
+  group = (await GroupModel.create(group)) as GroupClass;
+  return group._id?.toString();
 }
 
 export async function addMember(groupId: String, name: String) {

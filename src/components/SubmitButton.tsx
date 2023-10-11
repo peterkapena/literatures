@@ -7,13 +7,15 @@ import { useRouter } from "next/navigation";
 
 type SubmitButtonProps = {
   showReturn?: boolean;
+  content?: React.ReactNode;
 };
 export function SubmitButton({
   showReturn: hideReturn = true,
+  content = "Submit",
 }: SubmitButtonProps): React.ReactNode {
   const router = useRouter();
   return (
-    <Box display={"flex"} justifyContent={"space-around"}>
+    <Box>
       {hideReturn && (
         <Button
           type="button"
@@ -25,8 +27,8 @@ export function SubmitButton({
           Return
         </Button>
       )}
-      <Button type="submit" sx={{ mt: 3 }}>
-        Submit
+      <Button type="submit" color="success" sx={{ mt: 3 }}>
+        {content}
       </Button>
     </Box>
   );

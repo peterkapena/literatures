@@ -74,14 +74,13 @@ export function PairsComponent({
           </Grid>
         )}
       </Grid>
-
       <div>
         <Typography sx={{ mt: 3 }} level="body-sm" color="primary">
           {generatedPairs.list.length} generated
         </Typography>
-        <form onSubmit={onSave}>
+        {/* <form onSubmit={onSave}>
           <SaveButton />
-        </form>
+        </form> */}
       </div>
       {setshowSaveDialog && (
         <AlertDialogModal
