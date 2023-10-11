@@ -107,7 +107,7 @@ const NewOrder = ({ params }: { params: { id: string } }) => {
             message="Please comfirm deletion. Are you sure?"
             onClose={() => setConfirmDelete(false)}
             onYes={async () => {
-              if (await _delete(params.id)) push("/");
+              if (await _delete(params.id)) push("/order/all");
             }}
             type="confirm"
           ></AlertDialogModal>

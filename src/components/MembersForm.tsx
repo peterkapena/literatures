@@ -27,7 +27,7 @@ import {
   generatePairForMembers,
   getGroups,
   getMembers,
-  // intitializeMembers,
+  intitializeMembers,
 } from "../app/partner/generate/_actions";
 import { GroupClass, MemberClass } from "@/models/schema/Member";
 import Option from "@mui/joy/Option";
@@ -58,7 +58,7 @@ export function PairsForm({ onSubmit }: PairsFormProps) {
   }, []);
 
   async function fetch() {
-    // await intitializeMembers();
+    await intitializeMembers();
     const grps = await getGroups();
     setGroups(grps);
   }
@@ -208,6 +208,21 @@ export function PairsForm({ onSubmit }: PairsFormProps) {
                 <Typography level="h3" id="fav-movie" mb={2}>
                   Members
                 </Typography>
+                <Box sx={{ my: 2 }}>
+                  <FormControl sx={{ width: "300px" }}>
+                    <FormLabel>Add a member to this group</FormLabel>
+                    <Input
+                      value={newMember}
+                      onChange={(e) => setNewMember(e.target.value)}
+                      placeholder="Add a member..."
+                      endDecorator={
+                        <Button color="success" onClick={addMbr}>
+                          Add
+                        </Button>
+                      }
+                    ></Input>
+                  </FormControl>
+                </Box>
                 <Alert
                   role="group"
                   aria-labelledby="fav-movie"

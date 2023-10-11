@@ -11,8 +11,8 @@ import React from "react";
 import Avatar from "@mui/joy/Avatar";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
-import { SaveButton } from "@/components/SaveButton";
-import { savePairs } from "@/app/partner/generate/_actions";
+// import { SaveButton } from "@/components/SaveButton";
+// import { savePairs } from "@/app/partner/generate/_actions";
 import AlertDialogModal from "./Alert";
 import { MemberClass } from "@/models/schema/Member";
 
@@ -27,17 +27,17 @@ export function PairsComponent({
 }: PairsComponentProps): React.ReactNode {
   const [setshowSaveDialog, setSetshowSaveDialog] = React.useState(false);
 
-  async function onSave(event: React.SyntheticEvent) {
-    event.preventDefault();
-    if (await savePairs(generatedPairs)) {
-      setSetshowSaveDialog(true);
-    }
-  }
+  // async function onSave(event: React.SyntheticEvent) {
+  //   event.preventDefault();
+  //   if (await savePairs(generatedPairs)) {
+  //     setSetshowSaveDialog(true);
+  //   }
+  // }
   return (
     <Box>
       <Grid container sx={{ flexGrow: 1 }}>
         {generatedPairs.list.map((m, i) => (
-          <Grid key={i} xs={6} sm={4} md={4}>
+          <Grid key={i} xs={6} sm={3} md={3}>
             <List
               variant="outlined"
               sx={{

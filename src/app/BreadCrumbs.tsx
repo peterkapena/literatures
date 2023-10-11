@@ -4,45 +4,34 @@ import { Box, Breadcrumbs, Typography } from "@mui/joy";
 import { ChevronRightRounded, HomeRounded } from "@mui/icons-material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "@mui/joy/Link";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { formatUrl } from "@/utils/helpers";
 
 export const BreadCrumbs = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [paths, setPaths] = useState<string[]>([]);
   const { push } = useRouter();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const url = `${pathname}?${searchParams}`;
-    const p = formatUrl(url); // url.slice(0, -1).slice(1);
+    const p = formatUrl(url);
 
-    // Check if paths is not empty and if the last value is not the same as p
-    if (p && (paths.length === 0 || paths[paths.length - 1] !== p)) {
+    if (p && (paths.length === 0 || paths[paths.length - 1] !== url)) {
       setPaths([...paths, url]);
-      console.log(p);
     }
-    // paths.push(url);
   }, [pathname, searchParams]);
 
-  function formatUrl(url: string) {
-    // Remove the first and last characters
-    const trimmedUrl = url.slice(1, -1);
-
-    // Replace "/" with a space
-    const replacedUrl = trimmedUrl.replace("/", ", ");
-
-    // Capitalize the first letter of the first word
-    const formattedUrl =
-      replacedUrl.charAt(0).toUpperCase() + replacedUrl.slice(1);
-
-    return formattedUrl;
-  }
   function shrinkPath(index: number): void {
     const ps = [...paths];
     ps.splice(index); // This will remove all elements after the specified index
     console.log(ps, index + 1);
     setPaths(ps); // Assuming setPaths is a function that updates the state of paths
   }
+
+  if (!(session?.user as any)?.id) return <></>;
 
   return (
     <Breadcrumbs
@@ -51,7 +40,13 @@ export const BreadCrumbs = () => {
       separator={<ChevronRightRounded fontSize="small" />}
       sx={{ pl: 0 }}
     >
-      <Link color="neutral" href="/" aria-label="Home">
+      <Link
+        component="button"
+        onClick={() => {
+          shrinkPath(0);
+          push("/");
+        }}
+      >
         <HomeRounded />
       </Link>
       {paths.map((path, index) => (
@@ -64,6 +59,7 @@ export const BreadCrumbs = () => {
             <Link
               underline="none"
               component="button"
+              fontSize={"small"}
               onClick={() => {
                 shrinkPath(index);
                 push(path);

@@ -138,18 +138,15 @@ export default function Sidebar() {
                 </ListItemButton>
               </ListItem>
 
-              {roles.some((r) => r === "Admin") && (
-                <ListItem>
-                  <ListItemButton onClick={() => push("/partner/generate")}>
-                    <PeopleRounded />
-                    <ListItemContent>
-                      <Typography level="title-sm">
-                        Generate partners
-                      </Typography>
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-              )}
+              <ListItem>
+                <ListItemButton onClick={() => push("/partner/generate")}>
+                  <PeopleRounded />
+                  <ListItemContent>
+                    <Typography level="title-sm">Generate partners</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+
               <ListItem>
                 <ListItemButton onClick={() => push("/")}>
                   <AccountCircleRounded />

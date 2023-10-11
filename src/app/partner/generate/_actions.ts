@@ -33,28 +33,32 @@ export async function generatePairForMembers(
   return { list: newPairs, oddMember };
 }
 
-// export async function intitializeMembers() {
-//   if ((await MemberModel.find()).length <= 0) {
-//     const ms: { name: string; present: boolean }[] = [
-//       { name: "Rex", present: false },
-//       { name: "William", present: false },
-//       { name: "Marcelus", present: false },
-//       { name: "Peter", present: false },
-//       { name: "Selwyn", present: false },
-//       { name: "Tamryn", present: false },
-//       { name: "Rene", present: false },
-//       { name: "Janice", present: false },
-//       { name: "Michel", present: false },
-//       { name: "Chantel", present: false },
-//       { name: "Kiara", present: false },
-//       { name: "Faith", present: true },
-//     ];
-//     let group: GroupClass = await addGroup("Glenhood - Marcellus");
-//     ms.forEach(async (m) => {
-//       if (group._id) await addMember(group._id, m.name);
-//     });
-//   }
-// }
+export async function intitializeMembers() {
+  if ((await MemberModel.find()).length <= 0) {
+    const ms: string[] = [
+      "Rex",
+      "William",
+      "Marcelus",
+      "Peter",
+      "Selwyn",
+      "Tamryn",
+      "Rene",
+      "Janice",
+      "Michel",
+      "Chantel",
+      "Kiara",
+      "Faith",
+      "Josephin",
+      "Nombulelo",
+      "Theresa",
+      "Talitha",
+    ];
+    let groupId = await addGroup("1 Umthi Close Glenwood | Goodwood st");
+    ms.forEach(async (m) => {
+      if (groupId) await addMember(groupId, m);
+    });
+  }
+}
 
 export async function addGroup(name: string) {
   let group: GroupClass = { name };
