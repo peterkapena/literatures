@@ -1,7 +1,6 @@
 import { OrderClass, OrderModel } from "@/models/schema/Order";
 import { connectToDB } from "./mongo";
-import User from "@peterkapena/user_auth/src/models/User";
-import { UserModel } from "@/models/schema/User";
+import User, { UserModel } from "@/models/schema/User";
 
 interface GetOrdersReturn {
   order: OrderClass;

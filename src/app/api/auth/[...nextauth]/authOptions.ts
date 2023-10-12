@@ -1,6 +1,7 @@
 import { User, UserModel } from "@/models/schema/User";
 import { connectToDB } from "@/service/mongo";
-import { UserService } from "@peterkapena/user_auth";
+import { UserService } from "@/service/user.services";
+// import { UserService } from "@peterkapena/user_auth";
 import { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -31,7 +32,7 @@ export const authOptions: NextAuthOptions = {
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
           console.log(credentials);
-          const signedin = await new UserService(UserModel).simple_signIn(
+          const signedin = await new UserService().simple_signIn(
             credentials?.email_or_username || "",
             credentials?.password || ""
           );

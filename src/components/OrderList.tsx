@@ -9,11 +9,12 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import { OrderClass } from "@/models/schema/Order";
 import { getOrders } from "@/app/order/create/_actions";
-import User from "@peterkapena/user_auth/src/models/User";
+// import User from "@peterkapena/user_auth/src/models/User";
 import { useRouter } from "next/navigation";
 import { Card, Grid } from "@mui/joy";
 import { ArticleRounded } from "@mui/icons-material";
 import { dateFormatOptinos, en_US_Locale } from "@/utils/helpers";
+import User from "@/models/schema/User";
 
 type OrderListProps = {
   userId: string;

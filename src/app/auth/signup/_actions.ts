@@ -1,9 +1,10 @@
 "use server";
-import { Roles, UserModel } from "@/models/schema/User";
+import { Roles } from "@/models/schema/User";
 import { closeDBConnection, connectToDB } from "@/service/mongo";
-import { UserService } from "@peterkapena/user_auth";
-import { DuplicateCheck } from "@peterkapena/user_auth/src/services/UserService";
+// import { UserService } from "@peterkapena/user_auth";
+// import { DuplicateCheck } from "@peterkapena/user_auth/src/services/UserService";
 import { FormSchema, FormSchemaType } from "./form-schema";
+import { DuplicateCheck, UserService } from "@/service/user.services";
 
 export async function initializeUser() {
   return signUp({
@@ -19,9 +20,9 @@ export async function signUp(cred: FormSchemaType): Promise<Boolean> {
     if (await connectToDB()) {
     }
     const { email, password, username } = FormSchema.parse(cred);
-    console.log(cred)
+    console.log(cred);
 
-    const result = await new UserService(UserModel).signUp(
+    const result = await new UserService().signUp(
       {
         email,
         password,
@@ -34,7 +35,7 @@ export async function signUp(cred: FormSchemaType): Promise<Boolean> {
       },
       DuplicateCheck.BOTH_USERNAME_EMAIL
     );
-    console.log(result)
+    console.log(result);
     return result;
   } catch (error) {
     console.error(error);

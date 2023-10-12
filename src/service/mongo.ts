@@ -13,7 +13,7 @@ export async function connectToDB(): Promise<boolean> {
         const state = await mongoose.connect(url, {
           dbName: process.env.MONGO_DATABASE,
         });
-        // console.log(url);
+        console.log(url);
         return state.connection.readyState === 1;
     }
   } catch (error) {
