@@ -19,6 +19,7 @@ export async function signUp(cred: FormSchemaType): Promise<Boolean> {
     if (await connectToDB()) {
     }
     const { email, password, username } = FormSchema.parse(cred);
+    console.log(cred)
 
     const result = await new UserService(UserModel).signUp(
       {
@@ -33,6 +34,7 @@ export async function signUp(cred: FormSchemaType): Promise<Boolean> {
       },
       DuplicateCheck.BOTH_USERNAME_EMAIL
     );
+    console.log(result)
     return result;
   } catch (error) {
     console.error(error);

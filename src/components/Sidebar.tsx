@@ -27,11 +27,11 @@ import {
 import { APP_NAME } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { CustomSession } from "@/app/api/auth/[...nextauth]/authOptions";
+// import { CustomSession } from "@/app/api/auth/[...nextauth]/authOptions";
 export default function Sidebar() {
   const { push } = useRouter();
   const { data: session } = useSession();
-  const roles = (session as CustomSession)?.roles;
+  // const roles = (session as CustomSession)?.roles;
   // console.log(roles);
   return (
     <div>

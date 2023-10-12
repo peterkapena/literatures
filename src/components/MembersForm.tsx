@@ -6,10 +6,8 @@ import {
   Card,
   Chip,
   ChipDelete,
-  Divider,
   FormControl,
   FormLabel,
-  Grid,
   Input,
   List,
   ListItem,
@@ -32,13 +30,7 @@ import {
 import { GroupClass, MemberClass } from "@/models/schema/Member";
 import Option from "@mui/joy/Option";
 import { PairsClass } from "@/models/schema/Pairs";
-import {
-  CheckOutlined,
-  GroupRounded,
-  InfoOutlined,
-  InfoRounded,
-  PersonRounded,
-} from "@mui/icons-material";
+import { CheckOutlined, InfoRounded } from "@mui/icons-material";
 import AlertDialogModal from "./Alert";
 
 type PairsFormProps = {

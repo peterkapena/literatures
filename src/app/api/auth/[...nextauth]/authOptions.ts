@@ -25,25 +25,33 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // let a = { id: "1", name: "J Smith", email: "jsmith@example.com" };
-        await connectToDB();
-        const signedin = await new UserService(UserModel).simple_signIn(
-          credentials?.email_or_username || "",
-          credentials?.password || ""
-        );
+        try {
+          await connectToDB();
 
-        if (signedin?._id) {
-          // Any object returned will be saved in `user` property of the JWT
-          return {
-            id: signedin._id.toString(),
-            email: signedin.email || signedin.username,
-            name: signedin.username,
-          };
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          console.log(credentials);
+          const signedin = await new UserService(UserModel).simple_signIn(
+            credentials?.email_or_username || "",
+            credentials?.password || ""
+          );
+
+          if (signedin?._id) {
+            // Any object returned will be saved in `user` property of the JWT
+            return {
+              id: signedin._id.toString(),
+              email: signedin.email || signedin.username,
+              name: signedin.username,
+            };
+          } else {
+            // If you return null then an error will be displayed advising the user to check their details.
+            return null;
+
+            // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+          }
+        } catch (error) {
+          console.log(error);
           return null;
-
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
       },
     }),

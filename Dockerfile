@@ -1,4 +1,4 @@
-FROM arm64v8/node:alpine
+FROM node:alpine
 
 # Create app directory
 WORKDIR /app
@@ -34,8 +34,8 @@ CMD ["npm", "start", "--", "-p", "3000"]
 
 #                           docker build -t literatures .
 #                           docker run -dp 3000:3000 literatures
-#                           docker tag literatures  kapenapeter/literatures
-#                           docker push kapenapeter/literatures
+#                           docker tag literatures kapenapeter/literatures:x.x.x //replace x.x.x by correct versiom
+#                           docker push kapenapeter/literatures:x.x.x //replace x.x.x by correct versiom
 
 #                           sudo docker pull kapenapeter/literatures
 #                           sudo docker container rm literatures -f
