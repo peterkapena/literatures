@@ -148,7 +148,7 @@ export default function Sidebar() {
               </ListItem>
 
               <ListItem>
-                <ListItemButton onClick={() => push("/")}>
+                <ListItemButton onClick={() => push("/myprofile")}>
                   <AccountCircleRounded />
                   <ListItemContent>
                     <Typography level="title-sm">My profile</Typography>
