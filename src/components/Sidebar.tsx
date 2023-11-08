@@ -192,7 +192,7 @@ export default function Sidebar() {
               <Typography level="title-sm">{session?.user?.name}</Typography>
               <Typography level="body-xs">{session?.user?.email}</Typography>
             </Box>
-            <IconButton onClick={() => signOut()}>
+            <IconButton onClick={() => signOut()} title="Sign Out">
               <LogoutRoundedIcon />
             </IconButton>
           </Box>
