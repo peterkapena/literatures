@@ -8,7 +8,7 @@ export const FormSchema = z.object({
   quantity: z
     .number()
     .min(1, "Quantity must be greater than 1")
-    .max(100, "Quantity must be less than 100"), //z.string().nonempty("A valid number is required"),
+    .max(100, "Quantity must be less than 100"),
   notes: z.string().max(500, "Notes must be less than 500 characters long"),
 });
 export type FormSchemaType = z.infer<typeof FormSchema>;

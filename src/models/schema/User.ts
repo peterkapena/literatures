@@ -34,6 +34,7 @@ export interface UserClassQueryHelpers {
 @index({ email: 1 })
 @queryMethod(find_by_username)
 @queryMethod(find_by_email)
+
 export default class User extends base_model {
   @prop({ type: String, unique: true })
   email!: string;
