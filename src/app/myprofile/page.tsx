@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import TextField from "@/components/TextField";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormSchema, FormSchemaType } from "./form-schema";
+import { ProfileFormSchema, ProfileFormSchemaType } from "./form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Grid } from "@mui/joy";
 
@@ -28,13 +28,13 @@ function page() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormSchemaType>({
-    resolver: zodResolver(FormSchema),
+  } = useForm<ProfileFormSchemaType>({
+    resolver: zodResolver(ProfileFormSchema),
   });
 
-  const processForm: SubmitHandler<FormSchemaType> = async (data) => {
+  const processForm: SubmitHandler<ProfileFormSchemaType> = async (data) => {
     console.log(data);
-    
+
     // const result = await createOrder(data, (session as any)?.user.id);
   };
   return (

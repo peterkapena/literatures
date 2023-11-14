@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const FormSchema = z.object({
+export const ProfileFormSchema = z.object({
   firstName: z
     .string({})
     .min(1, "This is required")
@@ -12,4 +12,4 @@ export const FormSchema = z.object({
   cell: z.string().min(1, "This is required").max(18, "Incorrect cell number"),
 });
 
-export type FormSchemaType = z.infer<typeof FormSchema>;
+export type ProfileFormSchemaType = z.infer<typeof ProfileFormSchema>;
