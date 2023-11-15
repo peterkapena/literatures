@@ -63,7 +63,6 @@ export default function AlertDialogModal({
           >
             {message}
           </Typography>
-
           <Box
             sx={{
               display: "flex",

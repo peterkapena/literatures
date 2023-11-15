@@ -1,12 +1,18 @@
 import Profile, { ProfileModel } from "@/models/schema/Profile";
 
 export default class ProfileService {
-  async updateProfile(profile: Profile): Promise<Profile> {
-    if (profile._id || profile.userId) {
-      ProfileModel.updateOne({ _id: profile._id }, { ...profile });
-      return profile;
+  async getProfile(userId: any): Promise<Profile | null> {
+    return await ProfileModel.findOne({ userId });
+  }
+  async updateCreateProfile(
+    data: Profile,
+    _id: String | undefined
+  ): Promise<Profile> {
+    if (_id) {
+      await ProfileModel.updateOne({ _id: _id }, { ...data });
+      return { ...data };
     } else {
-      const newProfile = await ProfileModel.create(profile);
+      const newProfile = await ProfileModel.create(data);
       return newProfile;
     }
   }
