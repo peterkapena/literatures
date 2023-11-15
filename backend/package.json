@@ -1,0 +1,30 @@
+{
+  "name": "lit-backend",
+  "version": "1.0.0",
+  "description": "authentication and authorization Web API is  to be constructed following the OAuth2 protocol",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "compile": "tsc --watch",
+    "build": "tsc",
+    "start": "nodemon --env-file=.env ./dist/index.js",
+    "npmi": "npm install @apollo/server type-graphql graphql @typegoose/typegoose nodemon dotenv"
+  },
+  "author": "Kapena Peter Lumumba",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.9.5",
+    "@typegoose/typegoose": "^11.7.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "graphql": "^16.8.1",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.0.1",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^2.0.0-beta.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
