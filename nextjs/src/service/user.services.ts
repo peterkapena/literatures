@@ -57,20 +57,13 @@ export enum DuplicateCheck {
  * - duplicateCheck: The option for duplicate check, can be `DuplicateCheck.EMAIL`, `DuplicateCheck.USERNAME`, or `DuplicateCheck.BOTH_USERNAME_EMAIL`.
  */
 export class UserService {
-  //   constructor(private userModel: any) {}
-
   /**
    * Creates a new user.
    * @param user - The user object containing the email, username, password, and roles of the user to be created.
    * @returns A promise that resolves to the created user object.
    */
   private async createUser(user: User): Promise<User> {
-    try {
-      const createdUser = await UserModel.create(user);
-      return createdUser;
-    } catch (error) {
-      throw new Error(`Failed to create user: ${error}`);
-    }
+    return await UserModel.create(user);
   }
 
   /**
@@ -111,14 +104,18 @@ export class UserService {
    * @returns A boolean value indicating whether the user was successfully created (true) or if the user is a duplicate (false).
    */
   async signUp(user: User, duplicateCheck: DuplicateCheck): Promise<boolean> {
-    const isDuplicate = await this.isDuplicate(user, duplicateCheck);
+    try {
+      const isDuplicate = await this.isDuplicate(user, duplicateCheck);
 
-    if (isDuplicate) {
-      return false;
+      if (isDuplicate) {
+        return false;
+      }
+
+      await this.createUser({ ...user });
+      return true;
+    } catch (error) {
+      throw new Error(`Failed to create user: ${error}`);
     }
-
-    await this.createUser({ ...user });
-    return true;
   }
 
   /**
