@@ -18,5 +18,5 @@ export class SigninOutput {
   email?: String;
 
   @Field(() => [String], { nullable: false })
-  message!: String[];
+  messages!: String[];
 }

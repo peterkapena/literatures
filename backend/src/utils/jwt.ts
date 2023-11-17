@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import crypto from "./crypto.js";
+import crypto from "./crypto";
 
 export default class {
   static encodeJwt(

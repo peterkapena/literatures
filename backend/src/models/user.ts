@@ -9,7 +9,7 @@ import {
 import { Field, ObjectType } from "type-graphql";
 import bcrypt from "bcrypt";
 import { AsQueryMethod, ReturnModelType } from "@typegoose/typegoose/lib/types";
-import base_model from "./base_model.js";
+import base_model from "./base_model";
 
 function find_by_email(
   this: ReturnModelType<typeof UserClass, UserClassQueryHelpers>,
@@ -17,12 +17,19 @@ function find_by_email(
 ) {
   return this.findOne({ email });
 }
-
-interface UserClassQueryHelpers {
+function find_by_username(
+  this: ReturnModelType<typeof UserClass, UserClassQueryHelpers>,
+  username: UserClass["username"]
+) {
+  return this.findOne({ username });
+}
+export interface UserClassQueryHelpers {
   find_by_email: AsQueryMethod<typeof find_by_email>;
+  find_by_username: AsQueryMethod<typeof find_by_username>;
 }
 
 @queryMethod(find_by_email)
+@queryMethod(find_by_username)
 @pre<UserClass>("save", async function () {
   if (!this.isModified("password")) {
     return;
@@ -33,8 +40,7 @@ interface UserClassQueryHelpers {
   this.created_on = new Date().toISOString();
 })
 @index({ email: 1 })
-@queryMethod(find_by_email)
-@ObjectType()
+@queryMethod(find_by_username)
 export default class UserClass extends base_model {
   @prop({ type: String, unique: true })
   email!: String;
@@ -45,6 +51,9 @@ export default class UserClass extends base_model {
   @prop({ type: [String], default: [], required: false })
   @Field(() => [String])
   roles: String[];
+
+  @prop({ required: true, unique: true })
+  username!: string;
 }
 
 export const UserModel = getModelForClass<
