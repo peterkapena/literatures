@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-import crypto from "./crypto";
+import { decrypt, encrypt } from "./crypto.js";
+// import crypto from "./crypto.js";
 
 export default class {
   static encodeJwt(
@@ -11,20 +12,18 @@ export default class {
       "base64"
     ).toString();
 
-    const token = jwt.sign(object, privateKey, {
+    let token = jwt.sign(object, privateKey, {
       ...(options && options),
       expiresIn: "24h",
-      algorithm: "RS256",
+      algorithm: "HS256",
     });
-    const tkn = crypto.encrypt(token);
-    // console.log(tkn);
-    return tkn;
+    token = encrypt(token);
+    return token;
   }
 
   static decodeJwt<T>(token: string): T | null {
-    token = crypto.decrypt(token);
-    // console.log(token);
-    const publicKey = Buffer.from(process.env.PUBLIC_KEY, "base64").toString();
+    token = decrypt(token);
+    const publicKey = Buffer.from(process.env.PRIVATE_KEY, "base64").toString();
     const decoded = jwt.verify(token, publicKey) as T;
 
     return decoded;

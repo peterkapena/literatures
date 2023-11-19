@@ -1,25 +1,21 @@
 import crypto from "crypto";
 
-export default class {
-  private static secretKeyHex = process.env.SECRET_KEY_HEX;
-  private static ivHex = process.env.IV_HEX;
+const IV = Buffer.from(process.env.IV_HEX, "hex"); // Replace with your IV (32 hex characters)
+const KEY = Buffer.from(process.env.KEY_HEX, "hex"); // Replace with your key (64 hex characters)
 
-  static encrypt(data: string): string {
-    const secretKey = Buffer.from(this.secretKeyHex, "hex");
-    const iv = Buffer.from(this.ivHex, "hex");
-    const cipher = crypto.createCipheriv("aes-256-cbc", secretKey, iv);
-    let encrypted = cipher.update(data, "utf8", "base64");
-    encrypted += cipher.final("base64");
-    return Buffer.from(encrypted, "utf8").toString("hex");
-  }
+// Function to encrypt a message
+export function encrypt(text: string) {
+  let cipher = crypto.createCipheriv("aes-256-cbc", KEY, IV);
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return encrypted.toString("hex");
+}
 
-  static decrypt(data: string): string {
-    data = Buffer.from(data, "hex").toString("utf8");
-    const secretKey = Buffer.from(this.secretKeyHex, "hex");
-    const iv = Buffer.from(this.ivHex, "hex");
-    const decipher = crypto.createDecipheriv("aes-256-cbc", secretKey, iv);
-    let decrypted = decipher.update(data, "base64", "utf8");
-    decrypted += decipher.final("utf8");
-    return decrypted;
-  }
+// Function to decrypt the message
+export function decrypt(encryptedText: string) {
+  let encryptedBuffer = Buffer.from(encryptedText, "hex");
+  let decipher = crypto.createDecipheriv("aes-256-cbc", KEY, IV);
+  let decrypted = decipher.update(encryptedBuffer);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
 }

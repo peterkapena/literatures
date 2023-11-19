@@ -4,9 +4,8 @@ import {
   pre,
   queryMethod,
   index,
-  mongoose,
 } from "@typegoose/typegoose";
-import { Field, ObjectType } from "type-graphql";
+import { Field } from "type-graphql";
 import bcrypt from "bcrypt";
 import { AsQueryMethod, ReturnModelType } from "@typegoose/typegoose/lib/types";
 import base_model from "./base_model.js";
@@ -42,10 +41,10 @@ export interface UserClassQueryHelpers {
 @index({ email: 1 })
 @queryMethod(find_by_username)
 export default class UserClass extends base_model {
-  @prop({ type: String, unique: true })
+  @prop({ type: String, unique: true, required: true })
   email!: String;
 
-  @prop({ type: String })
+  @prop({ type: String, required: true })
   password!: String;
 
   @prop({ type: [String], default: [], required: false })
@@ -53,7 +52,7 @@ export default class UserClass extends base_model {
   roles: String[];
 
   @prop({ required: true, unique: true })
-  username!: string;
+  username!: String;
 }
 
 export const UserModel = getModelForClass<

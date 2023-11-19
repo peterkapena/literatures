@@ -1,8 +1,4 @@
 import UserClass, { UserModel } from "../models/user.js";
-import {
-  CreateUserInput,
-  CreateUserOutput,
-} from "../schema/user/create.user.js";
 import { SigninInput, SigninOutput } from "../schema/user/signin.user.js";
 import bcrypt from "bcrypt";
 import { VerifyTokenOutput } from "../schema/user/token.verify.js";
@@ -15,34 +11,34 @@ export enum DuplicateCheck {
 }
 
 class UserService {
-  /**
-   * Creates a new user in the system.
-   *
-   * @param user - The user object containing the email, username, password, and roles of the user to be created.
-   * @param duplicateCheck - The type of duplicate check to perform.
-   * @returns A boolean value indicating whether the user was successfully created (true) or if the user is a duplicate (false).
-   */
   async signUp(
-    user: UserClass,
-    duplicateCheck: DuplicateCheck
+    email: String,
+    password: String,
+    username: String,
+    duplicateCheck: DuplicateCheck = DuplicateCheck.EMAIL
   ): Promise<boolean> {
-    const isDuplicate = await this.isDuplicate(user, duplicateCheck);
+    const isDuplicate = await this.isDuplicate(email, username, duplicateCheck);
 
     if (isDuplicate) {
       return false;
     }
 
+    const user: UserClass = {
+      email,
+      password,
+      roles: [],
+      username: username || email,
+    };
     await UserModel.create(user);
 
     return true;
   }
 
   private async isDuplicate(
-    user: UserClass,
-    duplicateCheck: DuplicateCheck = DuplicateCheck.EMAIL
+    email: String,
+    username: String,
+    duplicateCheck: DuplicateCheck
   ): Promise<boolean> {
-    const { email, username } = user;
-
     let u: UserClass;
     switch (duplicateCheck) {
       case DuplicateCheck.EMAIL:
@@ -50,7 +46,7 @@ class UserService {
         return !!u?._id;
 
       case DuplicateCheck.USERNAME:
-        u = await UserModel.find().find_by_username(username);
+        u = await UserModel.find().find_by_username(username.toString());
         return !!u?._id;
 
       case DuplicateCheck.BOTH_USERNAME_EMAIL:
@@ -99,6 +95,7 @@ class UserService {
         const decoded = jwt.decodeJwt<UserClass>(inputToken.toString());
 
         const user = await UserModel.findOne({ _id: decoded._id }).lean();
+
         if (user._id)
           return {
             isValid: true,
@@ -106,7 +103,7 @@ class UserService {
             email: user.email,
           } as VerifyTokenOutput;
       } catch (err) {
-        console.log(err);
+        if (process.env.NODE_ENV !== "test") console.log(err);
       }
 
     return {

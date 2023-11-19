@@ -12,6 +12,7 @@
       "emitDecoratorMetadata": true,
       // "noUnusedLocals": true,
       "noUnusedParameters": true,
-      "noImplicitReturns": true
+      "noImplicitReturns": true,
+      "allowJs": false
     }
   }
