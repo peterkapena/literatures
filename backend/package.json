@@ -7,7 +7,7 @@
   "scripts": {
     "compile": "tsc --watch",
     "build": "tsc",
-    "start": "nodemon --env-file=.env ./dist/index.js",
+    "start": "nodemon --env-file=.env dist/src/index.js",
     "test": "jest"
   },
   "author": "Kapena Peter Lumumba",

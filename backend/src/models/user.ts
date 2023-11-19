@@ -9,7 +9,7 @@ import {
 import { Field, ObjectType } from "type-graphql";
 import bcrypt from "bcrypt";
 import { AsQueryMethod, ReturnModelType } from "@typegoose/typegoose/lib/types";
-import base_model from "./base_model";
+import base_model from "./base_model.js";
 
 function find_by_email(
   this: ReturnModelType<typeof UserClass, UserClassQueryHelpers>,

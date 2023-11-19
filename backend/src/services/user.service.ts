@@ -1,4 +1,4 @@
-import UserClass, { UserModel } from "../models/user";
+import UserClass, { UserModel } from "../models/user.js";
 import {
   CreateUserInput,
   CreateUserOutput,
@@ -6,7 +6,7 @@ import {
 import { SigninInput, SigninOutput } from "../schema/user/signin.user.js";
 import bcrypt from "bcrypt";
 import { VerifyTokenOutput } from "../schema/user/token.verify.js";
-import jwt from "../utils/jwt";
+import jwt from "../utils/jwt.js";
 
 export enum DuplicateCheck {
   EMAIL = 1,

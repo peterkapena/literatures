@@ -9,11 +9,13 @@ const jestConfig: JestConfigWithTsJest = {
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.ts$",
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
+    "(.+)\\.js": "$1",
   },
+  extensionsToTreatAsEsm: [".ts"],
   transform: {
     // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
     // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
-    "^.+\\.tsx?$": [
+    "\\.[jt]sx?$": [
       "ts-jest",
       {
         useESM: true,

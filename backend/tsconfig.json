@@ -2,7 +2,7 @@
     "compilerOptions": {
       "experimentalDecorators": true,
       "rootDirs": ["src"],
-      "outDir": "dist",
+      "outDir": "./dist",
       "lib": ["es2021", "esnext.asynciterable"],
       "target": "es2021",
       "module": "esnext",
