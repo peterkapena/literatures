@@ -9,6 +9,7 @@ import { Field } from "type-graphql";
 import bcrypt from "bcrypt";
 import { AsQueryMethod, ReturnModelType } from "@typegoose/typegoose/lib/types";
 import base_model from "./base_model.js";
+import { SALT } from "../utils/common.js";
 
 function find_by_email(
   this: ReturnModelType<typeof UserClass, UserClassQueryHelpers>,
@@ -34,8 +35,9 @@ export interface UserClassQueryHelpers {
     return;
   }
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password.toString(), salt);
+  if (!process.env.BCRYPT) throw new Error("BCRYPT is not set");
+
+  this.password = await bcrypt.hash(this.password.toString(), SALT);
   this.created_on = new Date().toISOString();
 })
 @index({ email: 1 })
@@ -53,6 +55,12 @@ export default class UserClass extends base_model {
 
   @prop({ required: true, unique: true })
   username!: String;
+
+  @prop({ unique: true })
+  resetPasswordToken?: String;
+
+  @prop({ unique: true })
+  resetPasswordExpires?: Date;
 }
 
 export const UserModel = getModelForClass<
