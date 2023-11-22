@@ -3,7 +3,7 @@ import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import ColorSchemeToggle from "@/components/ColorSchemeToggle";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Sheet, Typography } from "@mui/joy";
+import { Checkbox, Link, Sheet, Typography } from "@mui/joy";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { FormSchema, FormSchemaType } from "./form-schema";
@@ -16,6 +16,7 @@ import { SubmitLoadingButton } from "../../../components/SubmitLoadingButton";
 import { Notice } from "../../../components/Notice";
 import { initializeUser } from "../signup/_actions";
 import { PETER_KAPENA_EMAIL, PETER_KAPENA_PASSWORD } from "@/utils/constants";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 export default function Page() {
   const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -108,6 +109,20 @@ export default function Page() {
           error={errors.password}
           register={register}
         ></Password>
+
+        <Box
+          sx={{
+            my: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Checkbox label="remember me" /> 
+          <Button variant="plain" size="sm" onClick={() => push("/")}>
+            Forgot password?
+          </Button>
+        </Box>
 
         <Box
           sx={{
