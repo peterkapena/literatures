@@ -119,7 +119,7 @@ export default function Page() {
           }}
         >
           <Checkbox label="remember me" /> 
-          <Button variant="plain" size="sm" onClick={() => push("/")}>
+          <Button variant="plain" size="sm" onClick={() => push("/component/ResetPassword")}>
             Forgot password?
           </Button>
         </Box>
