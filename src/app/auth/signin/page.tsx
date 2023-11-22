@@ -16,7 +16,7 @@ import { SubmitLoadingButton } from "../../../components/SubmitLoadingButton";
 import { Notice } from "../../../components/Notice";
 import { initializeUser } from "../signup/_actions";
 import { PETER_KAPENA_EMAIL, PETER_KAPENA_PASSWORD } from "@/utils/constants";
-import FormControlLabel from "@mui/material/FormControlLabel";
+
 
 export default function Page() {
   const [showSubmitButton, setShowSubmitButton] = useState(true);
